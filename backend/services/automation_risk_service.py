@@ -1,10 +1,10 @@
 class AutomationRiskService:
-
+    
     def predict(self, similar_profiles):
 
         risk = (
             similar_profiles[
-                'automation_risk'
+                "automation_risk"
             ].mean()
         )
 
@@ -22,10 +22,12 @@ class AutomationRiskService:
 
         return {
 
-            "level": level,
+            "level":
+                level,
 
-            "score": round(
-                float(risk),
-                2
-            )
+            "score":
+                round(
+                    float(risk),
+                    2
+                )
         }

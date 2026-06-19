@@ -1,10 +1,10 @@
 class CareerGrowthService:
-
+    
     def predict(self, similar_profiles):
 
         growth = (
             similar_profiles[
-                'career_growth_score'
+                "career_growth_score"
             ].mean()
         )
 
@@ -22,10 +22,12 @@ class CareerGrowthService:
 
         return {
 
-            "level": level,
+            "level":
+                level,
 
-            "score": round(
-                float(growth),
-                2
-            )
+            "score":
+                round(
+                    float(growth),
+                    2
+                )
         }

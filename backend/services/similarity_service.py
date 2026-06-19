@@ -42,7 +42,7 @@ class SimilarityService:
         if filtered.empty:
 
             raise ValueError(
-                "No similar profiles found"
+                "No se encontraron perfiles similares"
             )
 
         return filtered

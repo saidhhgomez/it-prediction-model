@@ -84,7 +84,7 @@ class PredictionRequest(BaseModel):
 
         if not value:
             raise ValueError(
-                "Field cannot be empty"
+                "Campo vacío"
             )
 
         return value

@@ -1,10 +1,10 @@
 class SalaryProjectionService:
-
+    
     def predict(self, similar_profiles):
 
         salary = (
             similar_profiles[
-                'salary_usd'
+                "salary_usd"
             ].mean()
         )
 
@@ -26,10 +26,12 @@ class SalaryProjectionService:
 
         return {
 
-            "level": level,
+            "level":
+                level,
 
-            "salary_usd": round(
-                float(salary),
-                2
-            )
+            "average_salary_usd":
+                round(
+                    float(salary),
+                    2
+                )
         }
