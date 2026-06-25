@@ -6,6 +6,8 @@ from pydantic import (
 
 
 class PredictionRequest(BaseModel):
+    
+    uuid_usuario: str
 
     country: str = Field(
         ...,
@@ -66,6 +68,14 @@ class PredictionRequest(BaseModel):
         ge=1,
         le=80
     )
+    
+    idioma_ingles: str
+
+    github_profile: bool
+
+    programming_level: str
+
+    certifications: bool
 
     @field_validator(
         "country",

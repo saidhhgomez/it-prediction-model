@@ -1,3 +1,10 @@
+/*
+Created: 09/05/2026
+Modified: 11/06/2026
+Model: PostgreSQL (Professional Audit-Enabled)
+Name: db_itproject
+*/
+
 CREATE TABLE usuario (
     id_usuario SERIAL PRIMARY KEY,
     uuid_usuario UUID NOT NULL UNIQUE,
@@ -20,6 +27,10 @@ CREATE TABLE evaluacion (
     company_size VARCHAR(50),
     work_mode VARCHAR(50),
     weekly_hours NUMERIC(10,2),
+    idioma_ingles VARCHAR(20),
+    github_profile BOOLEAN,
+    programming_level VARCHAR(20),
+    certifications BOOLEAN,
 
     fecha_evaluacion TIMESTAMP DEFAULT NOW(),
 
@@ -77,3 +88,4 @@ CREATE TABLE historial_consulta (
     FOREIGN KEY (id_usuario)
         REFERENCES usuario(id_usuario)
 );
+

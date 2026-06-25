@@ -5,7 +5,8 @@ from sqlalchemy import (
     Numeric,
     Text,
     ForeignKey,
-    DateTime
+    DateTime,
+    Boolean
 )
 
 from sqlalchemy.dialects.postgresql import UUID
@@ -83,6 +84,14 @@ class Evaluacion(Base):
     weekly_hours = Column(
         Numeric(10, 2)
     )
+    
+    idioma_ingles = Column(String(20))
+
+    github_profile = Column(Boolean)
+
+    programming_level = Column(String(20))
+
+    certifications = Column(Boolean)
 
     fecha_evaluacion = Column(
         DateTime,
