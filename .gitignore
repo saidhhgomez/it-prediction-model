@@ -5,3 +5,4 @@ models/future_demand_v0/future_demand_model.pkl
 models/future_demand_v0/future_demand_target_encoder.pkl
 notebooks/automation_risk.ipynb
 procedure.txt
+data.json

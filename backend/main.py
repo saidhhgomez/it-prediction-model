@@ -1,3 +1,9 @@
+from sqlalchemy import text
+from sqlalchemy.orm import Session
+from fastapi import Depends
+
+from backend.database.session import get_db
+
 from fastapi import (
     FastAPI,
     HTTPException
@@ -31,6 +37,18 @@ from backend.services.salary_projection_service import (
     SalaryProjectionService
 )
 
+from backend.services.user_service import (
+    UserService
+)
+
+from backend.services.evaluation_service import (
+    EvaluationService
+)
+
+from backend.services.result_service import (
+    ResultService
+)
+
 app = FastAPI()
 
 
@@ -52,13 +70,204 @@ salary_service = (
     SalaryProjectionService()
 )
 
+user_service = UserService()
+
+evaluation_service = (
+    EvaluationService()
+)
+
+result_service = (
+    ResultService()
+)
+
+@app.get("/test-db")
+def test_db(
+    db: Session = Depends(get_db)
+):
+
+    result = db.execute(
+        text("SELECT NOW()")
+    )
+
+    return {
+        "postgres_time":
+        str(result.scalar())
+    }
+    
+@app.get("/test-insert")
+def test_insert(
+    db: Session = Depends(get_db)
+):
+
+    from backend.database.models import Usuario
+    import uuid
+
+    usuario = Usuario(
+        uuid_usuario=uuid.uuid4()
+    )
+
+    db.add(usuario)
+
+    db.commit()
+
+    db.refresh(usuario)
+
+    return {
+        "id_usuario":
+        usuario.id_usuario
+    }
+    
+from uuid import uuid4
+
+@app.get("/test-user-service")
+def test_user_service(
+    db: Session = Depends(get_db)
+):
+
+    usuario = (
+        user_service
+        .get_or_create_user(
+            db=db,
+            uuid_usuario="123e4567-e89b-12d3-a456-426614174000",
+            ip_registro="127.0.0.1"
+        )
+    )
+
+    return {
+        "id_usuario":
+            usuario.id_usuario,
+
+        "uuid_usuario":
+            str(
+                usuario.uuid_usuario
+            )
+    }
+    
+@app.get("/test-evaluation")
+def test_evaluation(
+    db: Session = Depends(get_db)
+):
+
+    class FakeRequest:
+
+        country = "Canada"
+
+        job_role = "Data Scientist"
+
+        ai_specialization = "LLM"
+
+        experience_level = "Mid"
+
+        experience_years = 3
+
+        education_required = "Bachelor"
+
+        industry = "Tech"
+
+        company_size = "Medium"
+
+        work_mode = "Hybrid"
+
+        weekly_hours = 40
+
+        idioma_ingles = "Advanced"
+
+        github_profile = True
+
+        programming_level = "Advanced"
+
+        certifications = True
+
+    usuario = (
+        user_service
+        .get_or_create_user(
+            db=db,
+            uuid_usuario="123e4567-e89b-12d3-a456-426614174000"
+        )
+    )
+
+    evaluacion = (
+        evaluation_service
+        .create_evaluation(
+            db=db,
+            id_usuario=usuario.id_usuario,
+            request=FakeRequest()
+        )
+    )
+
+    return {
+        "id_evaluacion":
+            evaluacion.id_evaluacion,
+
+        "id_usuario":
+            evaluacion.id_usuario
+    }
+    
+@app.get("/test-result")
+def test_result(
+    db: Session = Depends(get_db)
+):
+
+    future_demand = {
+        "prediction": "High",
+        "confidence": 87.5
+    }
+
+    automation_risk = {
+        "level": "Low",
+        "score": 22.4
+    }
+
+    career_growth = {
+        "level": "High",
+        "score": 78.9
+    }
+
+    salary_projection = {
+        "level": "Alto",
+        "average_salary_usd": 125000
+    }
+
+    resultado = (
+        result_service
+        .create_result(
+            db=db,
+            id_evaluacion=1,
+            future_demand=future_demand,
+            automation_risk=automation_risk,
+            career_growth=career_growth,
+            salary_projection=salary_projection,
+            similar_profiles_found=35
+        )
+    )
+
+    return {
+        "id_resultado":
+            resultado.id_resultado,
+
+        "id_evaluacion":
+            resultado.id_evaluacion
+    }
 
 @app.post("/predict")
 def predict(
-    request: PredictionRequest
+    request: PredictionRequest,
+    db: Session = Depends(get_db)
 ):
 
     try:
+
+        # USUARIO
+
+        usuario = (
+            user_service
+            .get_or_create_user(
+                db=db,
+                uuid_usuario=request.uuid_usuario
+            )
+        )
+
+        # DATASET
 
         df = (
             dataset_service
@@ -71,6 +280,8 @@ def predict(
                 status_code=500,
                 detail="Dataset is empty"
             )
+
+        # PERFILES SIMILARES
 
         similar_profiles = (
 
@@ -87,6 +298,8 @@ def predict(
                 status_code=404,
                 detail="No similar profiles found"
             )
+
+        # INDICADORES
 
         indicators = {
 
@@ -130,6 +343,8 @@ def predict(
                     detail=f"Invalid indicator: {key}"
                 )
 
+        # PREDICCIONES
+
         future_demand = (
             prediction_service
             .predict(
@@ -157,6 +372,31 @@ def predict(
                 similar_profiles
             )
         )
+
+        # GUARDAR EVALUACION
+
+        evaluacion = (
+            evaluation_service
+            .create_evaluation(
+                db=db,
+                id_usuario=usuario.id_usuario,
+                request=request
+            )
+        )
+
+        # GUARDAR RESULTADO
+
+        result_service.create_result(
+            db=db,
+            id_evaluacion=evaluacion.id_evaluacion,
+            future_demand=future_demand,
+            automation_risk=automation_risk,
+            career_growth=career_growth,
+            salary_projection=salary_projection,
+            similar_profiles_found=len(similar_profiles)
+        )
+
+        # RESPONSE
 
         return {
 
