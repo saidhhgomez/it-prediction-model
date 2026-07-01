@@ -49,6 +49,18 @@ from backend.services.result_service import (
     ResultService
 )
 
+from backend.services.chatgpt_service import (
+    ChatGPTService
+)
+
+from backend.services.feedback_service import (
+    FeedbackService
+)
+
+from backend.services.history_service import (
+    HistoryService
+)
+
 app = FastAPI()
 
 
@@ -78,6 +90,18 @@ evaluation_service = (
 
 result_service = (
     ResultService()
+)
+
+chatgpt_service = (
+    ChatGPTService()
+)
+
+feedback_service = (
+    FeedbackService()
+)
+
+history_service = (
+    HistoryService()
 )
 
 @app.get("/test-db")
@@ -247,6 +271,119 @@ def test_result(
 
         "id_evaluacion":
             resultado.id_evaluacion
+    }
+    
+@app.get("/test-chatgpt")
+def test_chatgpt():
+
+    class FakeRequest:
+
+        country = "Canada"
+        job_role = "Data Scientist"
+        ai_specialization = "LLM"
+        experience_level = "Mid"
+        experience_years = 3
+        education_required = "Bachelor"
+        industry = "Tech"
+        company_size = "Medium"
+        work_mode = "Hybrid"
+        weekly_hours = 40
+        idioma_ingles = "Advanced"
+        github_profile = True
+        programming_level = "Senior"
+        certifications = True
+
+    feedback = chatgpt_service.generate_feedback(
+
+        request=FakeRequest(),
+
+        future_demand={
+            "prediction": "Media",
+            "confidence": 99.14,
+            "probabilities": {
+                "Alta": 0.18,
+                "Media": 99.14,
+                "Baja": 0.68
+            }
+        },
+
+        automation_risk={
+            "level": "Medio",
+            "score": 49.23
+        },
+
+        career_growth={
+            "level": "Medio",
+            "score": 57.42
+        },
+
+        salary_projection={
+            "level": "Bajo",
+            "average_salary_usd": 76039.45
+        },
+
+        market_indicators={
+            "skill_demand_score": 49.67,
+            "job_openings": 17.48,
+            "job_security_score": 75.93,
+            "ai_adoption_score": 71.72
+        },
+
+        similar_profiles_found=574
+
+    )
+
+    return {
+        "feedback": feedback
+    }
+    
+@app.get("/test-feedback")
+def test_feedback(
+    db: Session = Depends(get_db)
+):
+
+    feedback = (
+        feedback_service
+        .create_feedback(
+            db=db,
+            id_resultado=1,
+            feedback="Este es un feedback de prueba."
+        )
+    )
+
+    return {
+
+        "id_feedback":
+            feedback.id_feedback,
+
+        "id_resultado":
+            feedback.id_resultado
+    }
+    
+@app.get("/test-history")
+def test_history(
+    db: Session = Depends(get_db)
+):
+
+    historial = (
+        history_service
+        .create_history(
+            db=db,
+            id_usuario=1,
+            endpoint="/predict"
+        )
+    )
+
+    return {
+
+        "id_historial":
+            historial.id_historial,
+
+        "id_usuario":
+            historial.id_usuario,
+
+        "endpoint":
+            historial.endpoint
     }
 
 @app.post("/predict")
