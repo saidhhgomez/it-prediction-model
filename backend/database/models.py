@@ -9,7 +9,7 @@ from sqlalchemy import (
     Boolean
 )
 
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 
 from sqlalchemy.orm import relationship
 
@@ -181,7 +181,7 @@ class Resultado(Base):
 
 
 class FeedbackChatGPT(Base):
-
+    
     __tablename__ = "feedback_chatgpt"
 
     id_feedback = Column(
@@ -198,7 +198,10 @@ class FeedbackChatGPT(Base):
         nullable=False
     )
 
-    feedback = Column(Text)
+    feedback = Column(
+        JSONB,
+        nullable=False
+    )
 
     fecha_generacion = Column(
         DateTime,

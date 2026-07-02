@@ -11,18 +11,14 @@ class FeedbackService:
         self,
         db: Session,
         id_resultado: int,
-        feedback: str
+        feedback: dict
     ):
 
-        nuevo_feedback = (
-            FeedbackChatGPT(
+        nuevo_feedback = FeedbackChatGPT(
 
-                id_resultado=
-                    id_resultado,
+            id_resultado=id_resultado,
 
-                feedback=
-                    feedback
-            )
+            feedback=feedback
         )
 
         db.add(

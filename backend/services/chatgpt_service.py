@@ -1,3 +1,4 @@
+import json
 import os
 
 from openai import OpenAI
@@ -8,6 +9,8 @@ class ChatGPTService:
     def __init__(self):
 
         api_key = os.getenv("OPENAI_API_KEY")
+        
+        print(api_key[:10])
 
         if not api_key:
             raise RuntimeError(
@@ -32,112 +35,217 @@ class ChatGPTService:
 
         salary_projection,
 
-        market_indicators,
+        indicators,
 
         similar_profiles_found
 
     ):
 
         system_prompt = """
-Eres un asesor profesional de carreras en Inteligencia Artificial.
+Eres un asesor profesional especializado en carreras de Inteligencia Artificial.
 
-Tu trabajo es interpretar resultados provenientes de un modelo de Machine Learning.
+IMPORTANTE
 
-No inventes información.
+Nunca inventes información.
 
-No cambies valores numéricos.
+Nunca modifiques números.
 
-Redacta un informe profesional, claro y amigable.
+Nunca cambies porcentajes.
 
-La respuesta debe contener:
+Nunca contradigas los resultados del modelo de Machine Learning.
 
-1. Resumen del perfil del usuario.
+Tu trabajo consiste únicamente en interpretar los resultados y explicarlos al usuario.
 
-2. Interpretación de la demanda futura.
+La respuesta DEBE SER ÚNICAMENTE un objeto JSON válido.
 
-3. Riesgo de automatización.
+No escribas markdown.
 
-4. Crecimiento profesional esperado.
+No escribas ```json.
 
-5. Proyección salarial.
+No escribas texto antes ni después del JSON.
 
-6. Indicadores del mercado laboral.
+La estructura debe ser exactamente la siguiente:
 
-7. Una recomendación personalizada.
+{
+  "title":"",
+  "intro":"",
+  "career_summary":"",
+  "future_demand":{
+      "title":"",
+      "description":"",
+      "recommendation":""
+  },
+  "automation_risk":{
+      "title":"",
+      "description":"",
+      "recommendation":""
+  },
+  "career_growth":{
+      "title":"",
+      "description":"",
+      "recommendation":""
+  },
+  "salary_projection":{
+      "title":"",
+      "description":""
+  },
+  "market_analysis":{
+      "title":"",
+      "description":""
+  },
+  "github_advice":"",
+  "english_advice":"",
+  "certification_advice":"",
+  "model_information":{
+      "title":"",
+      "description":""
+  },
+  "dataset":"",
+  "disclaimer":""
+}
 
-8. Explica que las predicciones fueron obtenidas utilizando un modelo de Machine Learning entrenado con un dataset internacional de empleos relacionados con Inteligencia Artificial.
-
-9. Explica que el análisis se realizó comparando perfiles similares encontrados en el dataset.
-
-No utilices listas enormes.
-
-Utiliza títulos y párrafos bien organizados.
+No agregues campos adicionales.
 """
 
         user_prompt = f"""
-Perfil del usuario
+INFORMACIÓN DEL PERFIL
 
-País: {request.country}
+País:
+{request.country}
 
-Cargo: {request.job_role}
+Cargo:
+{request.job_role}
 
-Especialización IA: {request.ai_specialization}
+Especialización:
+{request.ai_specialization}
 
-Experiencia: {request.experience_level}
+Experiencia:
+{request.experience_level}
 
-Años experiencia: {request.experience_years}
+Años de experiencia:
+{request.experience_years}
 
-Educación: {request.education_required}
+Educación:
+{request.education_required}
 
-Industria: {request.industry}
+Industria:
+{request.industry}
 
-Empresa: {request.company_size}
+Empresa:
+{request.company_size}
 
-Modalidad: {request.work_mode}
+Modalidad:
+{request.work_mode}
 
-Horas por semana: {request.weekly_hours}
+Horas semanales:
+{request.weekly_hours}
 
-Nivel de inglés: {request.idioma_ingles}
+Nivel de inglés:
+{request.idioma_ingles}
 
-Github: {request.github_profile}
+Github:
+{"Sí" if request.github_profile else "No"}
 
-Nivel de programación: {request.programming_level}
+Nivel de programación:
+{request.programming_level}
 
-Certificaciones: {request.certifications}
+Certificaciones:
+{"Sí" if request.certifications else "No"}
 
 
-Resultados del modelo
+RESULTADOS DEL MODELO
 
 Demanda futura:
+{future_demand["prediction"]}
 
-{future_demand}
+Confianza:
+{future_demand["confidence"]:.2f}%
 
-Riesgo automatización:
+Probabilidad Alta:
+{future_demand["probabilities"]["Alta"]:.2f}%
 
-{automation_risk}
+Probabilidad Media:
+{future_demand["probabilities"]["Media"]:.2f}%
+
+Probabilidad Baja:
+{future_demand["probabilities"]["Baja"]:.2f}%
+
+
+Riesgo de automatización:
+{automation_risk["level"]}
+
+Puntaje:
+{automation_risk["score"]:.2f}%
+
 
 Crecimiento profesional:
+{career_growth["level"]}
 
-{career_growth}
+Puntaje:
+{career_growth["score"]:.2f}%
 
-Proyección salarial:
 
-{salary_projection}
+Nivel salarial:
+{salary_projection["level"]}
 
-Indicadores:
+Salario promedio:
+USD {salary_projection["average_salary_usd"]:,.2f}
 
-{market_indicators}
+
+Indicadores del mercado
+
+Demanda de habilidades:
+{indicators["skill_demand_score"]:.2f}
+
+Seguridad laboral:
+{indicators["job_security_score"]:.2f}
+
+Adopción de IA:
+{indicators["ai_adoption_score"]:.2f}
+
+Ofertas laborales:
+{indicators["job_openings"]:.2f}
+
 
 Perfiles similares encontrados:
-
 {similar_profiles_found}
+
+
+INFORMACIÓN DEL MODELO
+
+Accuracy:
+98.21%
+
+Precision:
+98.21%
+
+Recall:
+98.21%
+
+F1 Score:
+98.20%
+
+Dataset:
+Global AI and Data Jobs Salary Dataset (Kaggle)
+
+El análisis fue realizado comparando el perfil del usuario con perfiles similares encontrados en dicho dataset.
+
+Recomendaciones:
+
+- Explica brevemente qué hace la profesión elegida.
+- Explica los resultados obtenidos.
+- Si el usuario no tiene GitHub, recomienda crear uno.
+- Si el nivel de inglés es bajo o intermedio, incentiva a mejorarlo.
+- Si no posee certificaciones, recomienda obtenerlas.
+- Da consejos relacionados con la especialización seleccionada.
+- Mantén un tono profesional y cercano.
 """
 
         response = self.client.chat.completions.create(
 
             model="gpt-4.1-mini",
 
-            temperature=0.4,
+            temperature=0.35,
 
             messages=[
 
@@ -151,7 +259,14 @@ Perfiles similares encontrados:
                     "content": user_prompt
                 }
 
-            ]
+            ],
+
+            response_format={
+                "type": "json_object"
+            }
+
         )
 
-        return response.choices[0].message.content
+        return json.loads(
+            response.choices[0].message.content
+        )

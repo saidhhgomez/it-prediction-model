@@ -61,6 +61,14 @@ from backend.services.history_service import (
     HistoryService
 )
 
+from backend.services.local_feedback_service import (
+    LocalFeedbackService
+)
+
+from backend.services.validation_service import (
+    ValidationService
+)
+
 app = FastAPI()
 
 
@@ -103,6 +111,14 @@ feedback_service = (
 history_service = (
     HistoryService()
 )
+
+local_feedback_service = (
+    LocalFeedbackService()
+)
+
+validation_service = (
+    ValidationService()
+    )
 
 @app.get("/test-db")
 def test_db(
@@ -403,6 +419,13 @@ def predict(
                 uuid_usuario=request.uuid_usuario
             )
         )
+        
+        validation_service.validate_prediction_limit(
+
+            db=db,
+
+            id_usuario=usuario.id_usuario
+        )
 
         # DATASET
 
@@ -480,7 +503,7 @@ def predict(
                     detail=f"Invalid indicator: {key}"
                 )
 
-        # PREDICCIONES
+        # PREDICCIONES ML
 
         future_demand = (
             prediction_service
@@ -523,17 +546,78 @@ def predict(
 
         # GUARDAR RESULTADO
 
-        result_service.create_result(
-            db=db,
-            id_evaluacion=evaluacion.id_evaluacion,
-            future_demand=future_demand,
-            automation_risk=automation_risk,
-            career_growth=career_growth,
-            salary_projection=salary_projection,
-            similar_profiles_found=len(similar_profiles)
+        resultado = (
+            result_service
+            .create_result(
+                db=db,
+                id_evaluacion=evaluacion.id_evaluacion,
+                future_demand=future_demand,
+                automation_risk=automation_risk,
+                career_growth=career_growth,
+                salary_projection=salary_projection,
+                similar_profiles_found=len(similar_profiles)
+            )
         )
 
-        # RESPONSE
+        # FEEDBACK IA
+
+        try:
+
+            feedback = chatgpt_service.generate_feedback(
+
+                request=request,
+
+                future_demand=future_demand,
+
+                automation_risk=automation_risk,
+
+                career_growth=career_growth,
+
+                salary_projection=salary_projection,
+
+                indicators=indicators,
+
+                similar_profiles_found=len(similar_profiles)
+
+            )
+
+        except Exception as e:
+
+            print("OpenAI Error:", e)
+
+            feedback = local_feedback_service.generate_feedback(
+                request=request,
+                future_demand=future_demand,
+                automation_risk=automation_risk,
+                career_growth=career_growth,
+                salary_projection=salary_projection,
+                indicators=indicators,
+                similar_profiles_found=len(similar_profiles)
+            )
+
+        # GUARDAR FEEDBACK
+
+        feedback_service.create_feedback(
+
+            db=db,
+
+            id_resultado=resultado.id_resultado,
+
+            feedback=feedback
+        )
+        
+        # GUARDAR HISTORIAL
+               
+        history_service.create_history(
+
+            db=db,
+
+            id_usuario=usuario.id_usuario,
+
+            endpoint="/predict"
+        )
+
+        # RESPUESTA
 
         return {
 
@@ -608,11 +692,28 @@ def predict(
                         2
                     )
             },
+            
+            "model_information": {
+
+                "accuracy": 98.21,
+
+                "precision": 98.21,
+
+                "recall": 98.21,
+
+                "f1_score": 98.20,
+
+                "dataset": "Global AI and Data Jobs Salary Dataset"
+
+            },
 
             "similar_profiles_found":
                 len(
                     similar_profiles
-                )
+                ),
+
+            "feedback":
+                feedback
         }
 
     except HTTPException:
@@ -622,6 +723,8 @@ def predict(
     except Exception as e:
 
         raise HTTPException(
+
             status_code=500,
+
             detail=str(e)
         )

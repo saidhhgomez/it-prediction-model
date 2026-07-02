@@ -68,7 +68,7 @@ CREATE TABLE feedback_chatgpt (
 
     id_resultado INT NOT NULL,
 
-    feedback TEXT,
+    feedback JSONB,
 
     fecha_generacion TIMESTAMP DEFAULT NOW(),
 
