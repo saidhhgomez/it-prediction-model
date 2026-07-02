@@ -401,6 +401,39 @@ def test_history(
         "endpoint":
             historial.endpoint
     }
+    
+@app.get("/history/{uuid_usuario}")
+def get_history(
+    uuid_usuario: str,
+    db: Session = Depends(get_db)
+):
+
+    try:
+
+        history = history_service.get_history_by_uuid(
+            db=db,
+            uuid_usuario=uuid_usuario
+        )
+
+        if history is None:
+
+            raise HTTPException(
+                status_code=404,
+                detail="No history found for this user"
+            )
+
+        return history
+
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
 @app.post("/predict")
 def predict(
