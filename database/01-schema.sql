@@ -39,12 +39,15 @@ CREATE TABLE evaluacion (
 );
 
 CREATE TABLE resultado (
+
     id_resultado SERIAL PRIMARY KEY,
 
     id_evaluacion INT NOT NULL,
 
     future_demand_level VARCHAR(20),
     future_demand_confidence NUMERIC(10,2),
+
+    future_demand_probabilities JSONB,
 
     automation_risk_level VARCHAR(20),
     automation_risk_score NUMERIC(10,2),
@@ -56,6 +59,11 @@ CREATE TABLE resultado (
     average_salary_usd NUMERIC(12,2),
 
     similar_profiles_found INT,
+
+    skill_demand_score NUMERIC(10,2),
+    job_openings NUMERIC(10,2),
+    job_security_score NUMERIC(10,2),
+    ai_adoption_score NUMERIC(10,2),
 
     fecha_resultado TIMESTAMP DEFAULT NOW(),
 

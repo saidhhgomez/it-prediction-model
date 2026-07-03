@@ -76,6 +76,8 @@ class PredictionRequest(BaseModel):
     programming_level: str
 
     certifications: bool
+    
+    nombre_usuario: str | None = None
 
     @field_validator(
         "country",

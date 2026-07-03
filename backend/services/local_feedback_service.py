@@ -50,7 +50,7 @@ class LocalFeedbackService:
 
         return {
 
-            "title": "Informe Profesional de Predicción de Carrera",
+            "title": f"Informe Profesional para {request.nombre_usuario or 'usuario'} de Predicción de Carrera",
 
             "intro": (
                 "El asistente basado en Inteligencia Artificial no se encuentra disponible en este momento. "
@@ -68,7 +68,7 @@ class LocalFeedbackService:
                 "title": "Demanda futura",
 
                 "description": (
-                    f"El modelo predice una demanda {future_demand['prediction']} "
+                    f"El modelo sugiere una posible demanda {future_demand['prediction']} "
                     f"con una confianza del {future_demand['confidence']:.2f}%."
                 ),
 
@@ -83,7 +83,7 @@ class LocalFeedbackService:
                 "title": "Riesgo de automatización",
 
                 "description": (
-                    f"El riesgo estimado es {automation_risk['level']} "
+                    f"El análisis indica un riesgo estimado de {automation_risk['level']} "
                     f"con un puntaje de {automation_risk['score']:.2f}%."
                 ),
 

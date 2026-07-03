@@ -135,6 +135,10 @@ class Resultado(Base):
     future_demand_confidence = Column(
         Numeric(10, 2)
     )
+    
+    future_demand_probabilities = Column(
+        JSONB
+    )
 
     automation_risk_level = Column(
         String(20)
@@ -162,6 +166,22 @@ class Resultado(Base):
 
     similar_profiles_found = Column(
         Integer
+    )
+
+    skill_demand_score = Column(
+        Numeric(10, 2)
+    )
+
+    job_openings = Column(
+        Numeric(10, 2)
+    )
+
+    job_security_score = Column(
+        Numeric(10, 2)
+    )
+
+    ai_adoption_score = Column(
+        Numeric(10, 2)
     )
 
     fecha_resultado = Column(

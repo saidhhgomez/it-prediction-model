@@ -15,7 +15,8 @@ class ResultService:
         automation_risk: dict,
         career_growth: dict,
         salary_projection: dict,
-        similar_profiles_found: int
+        similar_profiles_found: int,
+        indicators: dict
     ):
 
         resultado = Resultado(
@@ -27,6 +28,9 @@ class ResultService:
 
             future_demand_confidence=
                 future_demand["confidence"],
+
+            future_demand_probabilities=
+                future_demand["probabilities"],
 
             automation_risk_level=
                 automation_risk["level"],
@@ -47,7 +51,19 @@ class ResultService:
                 salary_projection["average_salary_usd"],
 
             similar_profiles_found=
-                similar_profiles_found
+                similar_profiles_found,
+
+            skill_demand_score=
+                float(indicators["skill_demand_score"]),
+
+            job_openings=
+                float(indicators["job_openings"]),
+
+            job_security_score=
+                float(indicators["job_security_score"]),
+
+            ai_adoption_score=
+                float(indicators["ai_adoption_score"])
         )
 
         db.add(resultado)
