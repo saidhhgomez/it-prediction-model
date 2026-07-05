@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Career Predictor | Evaluación Inteligente</title>
+
+    <link rel="stylesheet" href="/css/predict.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<!-- ===========================
+     FONDO
+=========================== -->
+
+<div class="background-glow"></div>
+
+<!-- ===========================
+     LOADING
+=========================== -->
+
+<div id="loading" class="loading hidden">
+
+    <div class="loader"></div>
+
+    <h2>Analizando tu perfil...</h2>
+
+    <p>
+        Nuestros modelos de Inteligencia Artificial están evaluando
+        tus respuestas.
+    </p>
+
+</div>
+
+<!-- ===========================
+     HEADER
+=========================== -->
+
+<header class="topbar">
+
+    <a href="/" class="logo">
+
+        <img src="/img/logo-autonoma.png" alt="logo">
+
+        <div>
+
+            <h1>AI Career Predictor</h1>
+
+            <span>Evaluación Inteligente</span>
+
+        </div>
+
+    </a>
+
+</header>
+
+<!-- ===========================
+     MAIN
+=========================== -->
+
+<main class="main-container">
+
+    <!-- INTRO -->
+
+    <section id="introCard" class="glass-card fade">
+
+        <span class="badge">
+            IA + Machine Learning
+        </span>
+
+        <h2>
+
+            Construye tu perfil profesional del futuro
+
+        </h2>
+
+        <p>
+
+            Imagina la carrera profesional que deseas construir.
+            Durante los próximos minutos responderás algunas preguntas
+            sobre cómo te visualizas en el futuro.
+
+        </p>
+
+        <p>
+
+            Nuestro modelo de Machine Learning utilizará esas respuestas
+            para estimar la demanda futura de ese perfil laboral y
+            posteriormente la Inteligencia Artificial generará un análisis
+            completamente personalizado.
+
+        </p>
+
+        <button id="startBtn" class="btn-primary">
+
+            Comenzar evaluación →
+
+        </button>
+
+    </section>
+
+    <!-- PROGRESO -->
+
+    <section id="questionContainer" class="hidden">
+
+        <div class="progress-wrapper">
+
+            <div class="progress-info">
+
+                <span id="questionNumber">
+
+                    Pregunta 1 de 14
+
+                </span>
+
+                <span id="progressPercent">
+
+                    0%
+
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+
+                <div id="progressFill"></div>
+
+            </div>
+
+        </div>
+
+        <!-- TARJETA -->
+        <!-- OJO: se quitó la clase "fade" de aquí. Ahora la entrada de la
+             tarjeta se controla 100% desde JS con "slide-in", el mismo
+             sistema que usan las transiciones entre preguntas. Esto evita
+             que "fade" compita con "slide-in"/"shake" por la propiedad
+             CSS "animation" y se re-dispare sola. -->
+        <div class="glass-card question-card">
+
+            <span class="question-category">
+
+                Perfil Profesional
+
+            </span>
+
+            <h2 id="questionTitle">
+
+                ¿Pregunta?
+
+            </h2>
+
+            <p id="questionDescription">
+
+                descripción...
+
+            </p>
+
+            <!-- aquí JS agrega opciones -->
+
+            <div id="answerContainer">
+
+            </div>
+
+            <!-- navegación -->
+
+            <div class="navigation">
+
+                <button
+                        id="backBtn"
+                        class="btn-secondary">
+
+                    ← Anterior
+
+                </button>
+
+                <button
+                        id="nextBtn"
+                        class="btn-primary">
+
+                    Siguiente →
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- RESULTADOS -->
+
+    <section
+            id="resultSection"
+            class="hidden fade">
+
+        <div class="glass-card">
+
+            <span class="badge">
+
+                Resultado
+
+            </span>
+
+            <h2>
+
+                Tu análisis predictivo
+
+            </h2>
+
+            <p>
+
+                Estos son los resultados obtenidos mediante
+                Machine Learning y posteriormente interpretados
+                por Inteligencia Artificial.
+
+            </p>
+
+            <!-- KPIs -->
+
+            <div id="kpiContainer">
+
+            </div>
+
+            <!-- chart -->
+
+            <div class="chart-card">
+
+                <canvas id="predictionChart"></canvas>
+
+            </div>
+
+            <!-- respuesta IA -->
+
+            <div
+                    id="iaResponse"
+                    class="analysis-card">
+
+            </div>
+
+            <!-- botones -->
+
+            <div class="result-buttons">
+
+                <button
+                        id="pdfBtn"
+                        class="btn-primary">
+
+                    Exportar PDF
+
+                </button>
+
+                <button
+                        id="restartBtn"
+                        class="btn-secondary">
+
+                    Nueva evaluación
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="/js/predict.js"></script>
+
+</body>
+
+</html>
