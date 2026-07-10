@@ -488,23 +488,24 @@ function destroyChart() {
 /* ==========================================================
    CARGAR JSON DE PRUEBA
 ========================================================== */
-
 async function loadPrediction() {
-
     try {
-
-        const response = await fetch("/data/report.json");
-
-        console.log(response);
-
-        prediction = await response.json();
-
+        const json = sessionStorage.getItem("predictionResult");
+        if (!json) {
+            alert("No existe ninguna evaluación para mostrar.");
+            window.location.href = "/predict";
+            return;
+        }
+        prediction = JSON.parse(json);
+        console.log("=================================");
+        console.log("PREDICCIÓN RECIBIDA");
         console.log(prediction);
-
-    } catch (error) {
-
+    }
+    catch (error) {
         console.error(error);
-
+        alert("Ocurrió un error cargando la evaluación.");
+        window.location.href = "/predict";
     }
 
+    sessionStorage.removeItem("predictionResult");
 }

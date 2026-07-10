@@ -25,6 +25,9 @@ const backBtn = document.getElementById("backBtn");
 const nextBtn = document.getElementById("nextBtn");
 const restartBtn = document.getElementById("restartBtn");
 const pdfBtn = document.getElementById("pdfBtn");
+const confirmModal = document.getElementById("confirmModal");
+const confirmEvaluationBtn = document.getElementById("confirmEvaluationBtn");
+const cancelEvaluationBtn = document.getElementById("cancelEvaluationBtn");
 const questionTitle = document.getElementById("questionTitle");
 const questionDescription = document.getElementById("questionDescription");
 const answerContainer = document.getElementById("answerContainer");
@@ -59,6 +62,8 @@ function getUserUUID() {
 const state = {
     uuid_usuario: getUserUUID()
 };
+
+let predictionResult = null;
 
 /* ==========================================================
    MAPEO DE TRADUCCIÓN (UI Española → Dataset API Inglés)
@@ -239,11 +244,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initEvents() {
-    startBtn.addEventListener("click", startFlow);
-    nextBtn.addEventListener("click", handleNext);
-    backBtn.addEventListener("click", handleBack);
-    restartBtn.addEventListener("click", handleRestart);
-    pdfBtn.addEventListener("click", exportPDF);
+    startBtn?.addEventListener("click", startFlow);
+    nextBtn?.addEventListener("click", handleNext);
+    backBtn?.addEventListener("click", handleBack);
+    restartBtn?.addEventListener("click", handleRestart);
+    pdfBtn?.addEventListener("click", exportPDF);
+    confirmEvaluationBtn?.addEventListener("click", confirmEvaluation);
+    cancelEvaluationBtn?.addEventListener("click", closeConfirmModal);
 }
 
 /* ==========================================================
@@ -274,8 +281,9 @@ function handleNext() {
     if (currentQuestion < questions.length - 1) {
         currentQuestion++;
         transitionQuestion("next");
-    } else {
-        finishForm();
+    }
+    else {
+        openConfirmModal();
     }
 }
 
@@ -290,9 +298,37 @@ function handleBack() {
 function handleRestart() {
     currentQuestion = 0;
     answers = {};
-    resultSection.classList.add("hidden");
+    resultSection?.classList.add("hidden");
     questionContainer.classList.remove("hidden");
     renderQuestionContent();
+}
+
+/* ==========================================================
+   MODAL CONFIRMACIÓN
+========================================================== */
+
+function openConfirmModal() {
+    confirmModal.classList.remove("hidden");
+    confirmModal.classList.remove("closing");
+    document.body.style.overflow = "hidden";
+    confirmEvaluationBtn.focus();
+}
+
+function closeConfirmModal() {
+    const card = confirmModal.querySelector(".modal-card");
+    confirmModal.classList.add("closing");
+    card.classList.add("closing");
+    setTimeout(() => {
+        confirmModal.classList.remove("closing");
+        card.classList.remove("closing");
+        confirmModal.classList.add("hidden");
+        document.body.style.overflow = "auto";
+    }, 250);
+}
+
+function confirmEvaluation() {
+    closeConfirmModal();
+    finishForm();
 }
 
 /* ==========================================================
@@ -506,18 +542,17 @@ function selectOption(value, qId, element) {
     addClassTemporarily(element, "pulse", 250);
 }
 
-/* ==========================================================
-   FINALIZACIÓN DEL FORMULARIO Y PROCESAMIENTO
-========================================================== */
 async function finishForm() {
     loading.classList.remove("hidden");
     progressFill.style.width = "100%";
     progressPercent.innerText = "100%";
     nextBtn.disabled = true;
     backBtn.disabled = true;
-    restartBtn.disabled = true;
+    document.body.style.pointerEvents = "none";
+    loading.style.pointerEvents = "all";
     const payload = buildPayload();
-    console.log("ENVIANDO PAYLOAD:");
+    console.log("=================================");
+    console.log("ENVIANDO AL BACKEND");
     console.log(payload);
     try {
         const response = await fetch("/predict", {
@@ -527,67 +562,41 @@ async function finishForm() {
             },
             body: JSON.stringify(payload)
         });
-        if (!response.ok) {
-            throw new Error("El servidor respondió con un error.");
-        }
         const result = await response.json();
-        console.log("RESPUESTA DEL SERVIDOR:");
+
+        console.log("URL RESPONDIDA");
+        console.log(response.url);
+
+        console.log("STATUS");
+        console.log(response.status);
+
+        console.log("BODY");
+
         console.log(result);
-        loading.classList.add("hidden");
-        showResults(payload);
-    } catch (error) {
+
+        console.log("=================================");
+        console.log("RESPUESTA");
+        console.log(result);
+        if (!response.ok) {
+            throw new Error(
+                result.detail?.message ||
+                "Error al realizar la predicción."
+            );
+        }
+        sessionStorage.setItem(
+            "predictionResult",
+            JSON.stringify(result)
+        );
+        window.location.href = "/result";
+    }
+    catch (error) {
         console.error(error);
         loading.classList.add("hidden");
+        document.body.style.pointerEvents = "auto";
         nextBtn.disabled = false;
         backBtn.disabled = false;
-        restartBtn.disabled = false;
-        alert("No fue posible conectar con el servidor.");
+        alert(error.message);
     }
-}
-
-function showResults(payload) {
-    questionContainer.classList.add("hidden");
-    resultSection.classList.remove("hidden");
-
-    // KPIs Estáticos de Interfaz
-    kpiContainer.innerHTML = `
-        <div class="kpi-card">🎯 Fit IA: 87%</div>
-        <div class="kpi-card">📈 Demanda: Alta</div>
-        <div class="kpi-card">💰 Salario: Premium</div>
-    `;
-
-    // Configuración Segura de Chart.js
-    if (predictionChart) predictionChart.destroy();
-
-    const ctx = document.getElementById("predictionChart");
-    predictionChart = new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: ["AI Fit", "Market Demand", "Salary Potential"],
-            datasets: [{
-                label: "Score",
-                data: [87, 79, 92],
-                backgroundColor: "#f38c2c"
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    });
-
-    // Respuesta IA con Efecto de Máquina de Escribir
-    const message = `Tu perfil tiene una alta proyección en el mercado de Inteligencia Artificial.
-
-Se observa una fuerte compatibilidad con roles avanzados como Machine Learning Engineer y AI Research Scientist.
-
-El mercado actual muestra una creciente demanda en tu especialización, especialmente en LLMs y Generative AI.`;
-
-    typeText(iaResponse, message, 15);
 }
 
 /* ==========================================================

@@ -2,7 +2,7 @@
 Created: 09/05/2026
 Modified: 11/06/2026
 Model: PostgreSQL (Professional Audit-Enabled)
-Name: db_itproject
+Name: db_itproject   18
 */
 
 CREATE TABLE usuario (

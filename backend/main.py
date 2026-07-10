@@ -185,6 +185,36 @@ def get_result(
             status_code=500,
             detail=str(e)
         )
+        
+@app.get("/predict/can-predict")
+def can_predict(
+
+    uuid_usuario: str,
+
+    db: Session = Depends(get_db)
+
+):
+
+    usuario = (
+
+        user_service
+        .get_or_create_user(
+
+            db=db,
+
+            uuid_usuario=uuid_usuario
+
+        )
+
+    )
+
+    return validation_service.get_prediction_status(
+
+        db=db,
+
+        id_usuario=usuario.id_usuario
+
+    )
 
 @app.post("/predict")
 def predict(

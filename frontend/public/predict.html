@@ -4,8 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AI Career Predictor | Evaluación Inteligente</title>
 
@@ -17,175 +16,232 @@
 
 <body>
 
-<!-- ===========================
+    <!-- ===========================
      FONDO
 =========================== -->
 
-<div class="background-glow"></div>
+    <div class="background-glow"></div>
 
-<!-- ===========================
+    <!-- ===========================
      LOADING
 =========================== -->
 
-<div id="loading" class="loading hidden">
+    <div id="loading" class="loading hidden">
 
-    <div class="loader"></div>
+        <div class="loader"></div>
 
-    <h2>Analizando tu perfil...</h2>
+        <h2>Analizando tu perfil...</h2>
 
-    <p>
-        Nuestros modelos de Inteligencia Artificial están evaluando
-        tus respuestas.
-    </p>
+        <p>
+            Nuestros modelos de Inteligencia Artificial están evaluando
+            tus respuestas.
+        </p>
 
-</div>
+    </div>
 
-<!-- ===========================
+    <!-- ===========================
      HEADER
 =========================== -->
 
-<header class="topbar">
+    <header class="topbar">
 
-    <a href="/" class="logo">
+        <a href="/" class="logo">
 
-        <img src="/img/logo-autonoma.png" alt="logo">
+            <img src="/img/logo-autonoma.png" alt="logo">
 
-        <div>
+            <div>
 
-            <h1>AI Career Predictor</h1>
+                <h1>AI Career Predictor</h1>
 
-            <span>Evaluación Inteligente</span>
+                <span>Evaluación Inteligente</span>
 
-        </div>
+            </div>
 
-    </a>
+        </a>
 
-</header>
+    </header>
 
-<!-- ===========================
+    <!-- ===========================
      MAIN
 =========================== -->
 
-<main class="main-container">
+    <main class="main-container">
 
-    <!-- INTRO -->
+        <!-- INTRO -->
 
-    <section id="introCard" class="glass-card fade">
+        <section id="introCard" class="glass-card fade">
 
-        <span class="badge">
-            IA + Machine Learning
-        </span>
+            <span class="badge">
+                IA + Machine Learning
+            </span>
 
-        <h2>
+            <h2>
 
-            Construye tu perfil profesional del futuro
+                Construye tu perfil profesional del futuro
 
-        </h2>
+            </h2>
 
-        <p>
+            <p>
 
-            Imagina la carrera profesional que deseas construir.
-            Durante los próximos minutos responderás algunas preguntas
-            sobre cómo te visualizas en el futuro.
+                Imagina la carrera profesional que deseas construir.
+                Durante los próximos minutos responderás algunas preguntas
+                sobre cómo te visualizas en el futuro.
 
-        </p>
+            </p>
 
-        <p>
+            <p>
 
-            Nuestro modelo de Machine Learning utilizará esas respuestas
-            para estimar la demanda futura de ese perfil laboral y
-            posteriormente la Inteligencia Artificial generará un análisis
-            completamente personalizado.
+                Nuestro modelo de Machine Learning utilizará esas respuestas
+                para estimar la demanda futura de ese perfil laboral y
+                posteriormente la Inteligencia Artificial generará un análisis
+                completamente personalizado.
 
-        </p>
+            </p>
 
-        <button id="startBtn" class="btn-primary">
+            <button id="startBtn" class="btn-primary">
 
-            Comenzar evaluación →
+                Comenzar evaluación →
 
-        </button>
+            </button>
 
-    </section>
+        </section>
 
-    <!-- PROGRESO -->
+        <!-- PROGRESO -->
 
-    <section id="questionContainer" class="hidden">
+        <section id="questionContainer" class="hidden">
 
-        <div class="progress-wrapper">
+            <div class="progress-wrapper">
 
-            <div class="progress-info">
+                <div class="progress-info">
 
-                <span id="questionNumber">
+                    <span id="questionNumber">
 
-                    Pregunta 1 de 14
+                        Pregunta 1 de 14
 
-                </span>
+                    </span>
 
-                <span id="progressPercent">
+                    <span id="progressPercent">
 
-                    0%
+                        0%
 
-                </span>
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div id="progressFill"></div>
+
+                </div>
 
             </div>
 
-            <div class="progress-bar">
-
-                <div id="progressFill"></div>
-
-            </div>
-
-        </div>
-
-        <!-- TARJETA -->
-        <!-- OJO: se quitó la clase "fade" de aquí. Ahora la entrada de la
+            <!-- TARJETA -->
+            <!-- OJO: se quitó la clase "fade" de aquí. Ahora la entrada de la
              tarjeta se controla 100% desde JS con "slide-in", el mismo
              sistema que usan las transiciones entre preguntas. Esto evita
              que "fade" compita con "slide-in"/"shake" por la propiedad
              CSS "animation" y se re-dispare sola. -->
-        <div class="glass-card question-card">
+            <div class="glass-card question-card">
 
-            <span class="question-category">
+                <span class="question-category">
 
-                Perfil Profesional
+                    Perfil Profesional
 
-            </span>
+                </span>
 
-            <h2 id="questionTitle">
+                <h2 id="questionTitle">
 
-                ¿Pregunta?
+                    ¿Pregunta?
 
-            </h2>
+                </h2>
 
-            <p id="questionDescription">
+                <p id="questionDescription">
 
-                descripción...
+                    descripción...
 
-            </p>
+                </p>
 
-            <!-- aquí JS agrega opciones -->
+                <!-- aquí JS agrega opciones -->
 
-            <div id="answerContainer">
+                <div id="answerContainer">
+
+                </div>
+
+                <!-- navegación -->
+
+                <div class="navigation">
+
+                    <button id="backBtn" class="btn-secondary">
+
+                        ← Anterior
+
+                    </button>
+
+                    <button id="nextBtn" class="btn-primary">
+
+                        Siguiente →
+
+                    </button>
+
+                </div>
 
             </div>
 
-            <!-- navegación -->
+        </section>
 
-            <div class="navigation">
+        <!-- RESULTADOS -->
 
-                <button
-                        id="backBtn"
-                        class="btn-secondary">
 
-                    ← Anterior
+
+    </main>
+
+    <!-- ==========================================
+    MODAL CONFIRMACIÓN DE EVALUACIÓN
+    ========================================== -->
+
+    <div id="confirmModal" class="modal-overlay hidden">
+
+        <div class="modal-card">
+
+            <div class="modal-icon">
+                🤖
+            </div>
+
+            <h2>
+                ¿Generar evaluación?
+            </h2>
+
+            <p>
+
+                Se enviarán tus respuestas al modelo de Inteligencia Artificial
+                para generar un informe personalizado.
+
+            </p>
+
+            <div class="modal-warning">
+
+                ⚠ Esta evaluación consume una consulta.
+
+                <br><br>
+
+                Una vez generada, deberás esperar
+                <strong>12 horas</strong>
+                para realizar una nueva evaluación.
+
+            </div>
+
+            <div class="modal-buttons">
+
+                <button id="cancelEvaluationBtn" class="btn-secondary">
+
+                    Cancelar
 
                 </button>
 
-                <button
-                        id="nextBtn"
-                        class="btn-primary">
+                <button id="confirmEvaluationBtn" class="btn-primary">
 
-                    Siguiente →
+                    Generar evaluación
 
                 </button>
 
@@ -193,15 +249,9 @@
 
         </div>
 
-    </section>
+    </div>
 
-    <!-- RESULTADOS -->
-
-    
-
-</main>
-
-<script src="/js/predict.js"></script>
+    <script src="/js/predict.js"></script>
 
 </body>
 
