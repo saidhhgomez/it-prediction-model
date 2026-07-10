@@ -474,6 +474,42 @@ p { color: var(--soft); line-height: 1.9; font-size: 16px; }
 .slider-wrapper { margin-top: 35px; }
 .slider-value { margin-top: 15px; font-size: 28px; font-weight: 700; color: var(--primary); }
 
+/* ==========================================
+   TEXT INPUT
+========================================== */
+
+.text-wrapper {
+    margin-top: 35px;
+}
+
+.text-input {
+    width: 100%;
+    padding: 18px 22px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.04);
+    color: white;
+    font-size: 18px;
+    font-family: inherit;
+    transition:
+            border-color .25s,
+            box-shadow .25s,
+            background .25s;
+}
+
+.text-input::placeholder {
+    color: rgba(255,255,255,.40);
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255,255,255,.06);
+    box-shadow:
+            0 0 0 3px rgba(243,140,44,.15),
+            0 10px 30px rgba(243,140,44,.08);
+}
+
 input[type=range] {
     width: 100%;
     appearance: none;

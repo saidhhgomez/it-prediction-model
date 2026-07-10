@@ -6,7 +6,7 @@
 /* ==========================================================
    CONFIGURACIÓN Y ESTADO GLOBAL
 ========================================================== */
-const TOTAL_QUESTIONS = 14;
+const TOTAL_QUESTIONS = 15;
 let currentQuestion = 0;
 let answers = {}; // Cambiado a let para permitir reinicio en restartBtn
 let predictionChart = null;
@@ -66,7 +66,7 @@ const state = {
 const mapValues = {
     country: {
         "Canadá": "Canada",
-        "EEUU": "USA",
+        "Estados Unidos": "USA",
         "Alemania": "Germany",
         "Francia": "France",
         "España": "Spain",
@@ -74,68 +74,46 @@ const mapValues = {
         "Australia": "Australia",
         "India": "India",
         "Brasil": "Brazil",
-        "UK": "UK",
         "Singapur": "Singapore",
         "Países Bajos": "Netherlands",
-        "UAE": "UAE"
+        "Emiratos Árabes Unidos": "UAE"
     },
-    job_role: {
-        "Ingeniero ML": "Machine Learning Engineer",
-        "Ingeniero IA": "AI Engineer",
-        "Investigador": "Research Scientist",
-        "Software AI": "Software Engineer AI",
-        "Analista Datos": "Data Analyst",
-        "Visión Computacional": "Computer Vision Engineer",
-        "NLP Engineer": "NLP Engineer",
-        "Data Scientist": "Data Scientist"
-    },
-    ai_specialization: {
-        "LLM": "LLM",
-        "NLP": "NLP",
-        "Computer Vision": "Computer Vision",
-        "Robotics": "Robotics",
-        "Reinforcement Learning": "Reinforcement Learning",
-        "MLOps": "MLOps",
-        "Generative AI": "Generative AI",
-        "Analytics": "Analytics"
-    },
-    experience_level: {
-        "Junior": "Entry",
-        "Mid": "Mid",
-        "Senior": "Senior",
-        "Lead": "Lead"
-    },
+
     education_required: {
         "Bachiller": "Bachelor",
-        "Master": "Master",
-        "PhD": "PhD",
+        "Maestría": "Master",
+        "Doctorado": "PhD",
         "Bootcamp": "Bootcamp",
-        "Diploma": "Diploma"
+        "Diplomado": "Diploma"
     },
+
     industry: {
         "Tecnología": "Tech",
         "Finanzas": "Finance",
         "Salud": "Healthcare",
+        "Videojuegos": "Gaming",
         "Educación": "Education",
-        "Gaming": "Gaming",
         "Retail": "Retail",
         "Consultoría": "Consulting",
         "Energía": "Energy",
-        "Telecom": "Telecom",
+        "Telecomunicaciones": "Telecom",
         "Automotriz": "Automotive"
     },
+
     company_size: {
         "Startup": "Startup",
         "Pequeña": "Small",
         "Mediana": "Medium",
         "Grande": "Large",
-        "Enterprise": "Enterprise"
+        "Corporación": "Enterprise"
     },
+
     work_mode: {
         "Remoto": "Remote",
         "Híbrido": "Hybrid",
         "Presencial": "Onsite"
     },
+
     idioma_ingles: {
         "Básico": "Basic",
         "Intermedio": "Intermediate",
@@ -147,6 +125,12 @@ const mapValues = {
    DATASET DE PREGUNTAS (Estructura Original Intacta)
 ========================================================== */
 const questions = [
+    {
+        id: "nombre_usuario",
+        title: "¿Cómo te llamas?",
+        description: "Escribe tu nombre para personalizar el análisis generado por Inteligencia Artificial.",
+        type: "text"
+    },
     {
         id: "country",
         title: "¿En qué país te visualizas trabajando?",
@@ -236,7 +220,7 @@ const questions = [
         title: "¿Cuál es tu nivel de programación actual?",
         description: "Evalúa tu nivel de habilidades en programación.",
         type: "card",
-        options: ["Junior", "Mid", "Senior"]
+        options: ["Entry", "Mid", "Senior"]
     },
     {
         id: "certifications",
@@ -315,13 +299,29 @@ function handleRestart() {
    VALIDACIONES (Totalmente aislada de renders o reinicios visuales)
 ========================================================== */
 function validateAnswer() {
+
     const q = questions[currentQuestion];
-    if (answers[q.id] === undefined) {
+
+    let valid = true;
+
+    if (q.type === "text") {
+
+        const value = (answers[q.id] || "").trim();
+
+        if (value.length < 2) {
+            valid = false;
+        }
+    } else {
+        if (answers[q.id] === undefined) {
+
+            valid = false;
+
+        }
+    }
+    if (!valid) {
         const card = document.querySelector(".question-card");
         if (card) {
-            // Solo se sacude. Como "fade" ya no vive de forma estática
-            // en el card, quitar "shake" al terminar no reactiva
-            // ninguna otra animación.
+
             addClassTemporarily(card, "shake", 400);
         }
         return false;
@@ -378,6 +378,7 @@ function renderQuestionContent() {
     answerContainer.innerHTML = "";
 
     // Renderizado según tipo de Input
+    if (q.type === "text") renderText(q);
     if (q.type === "card") renderCards(q);
     if (q.type === "slider") renderSlider(q);
     if (q.type === "boolean") renderBoolean(q);
@@ -465,6 +466,39 @@ function renderSlider(q) {
     answerContainer.appendChild(wrapper);
 }
 
+function renderText(q) {
+
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("text-wrapper");
+
+    const input = document.createElement("input");
+
+    input.type = "text";
+    input.classList.add("text-input");
+
+    input.placeholder = "Escribe tu nombre...";
+
+    input.maxLength = 80;
+
+    input.autocomplete = "name";
+
+    input.value = answers[q.id] || "";
+
+    input.focus();
+
+    input.addEventListener("input", () => {
+        input.value = input.value
+            .replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ ]/g, "")
+            .replace(/\s{2,}/g, " ");
+        answers[q.id] = input.value.trimStart();
+    });
+
+    wrapper.appendChild(input);
+
+    answerContainer.appendChild(wrapper);
+
+}
+
 function selectOption(value, qId, element) {
     answers[qId] = value;
     document.querySelectorAll(".option-card").forEach(el => el.classList.remove("selected"));
@@ -475,18 +509,40 @@ function selectOption(value, qId, element) {
 /* ==========================================================
    FINALIZACIÓN DEL FORMULARIO Y PROCESAMIENTO
 ========================================================== */
-function finishForm() {
+async function finishForm() {
     loading.classList.remove("hidden");
     progressFill.style.width = "100%";
     progressPercent.innerText = "100%";
-
+    nextBtn.disabled = true;
+    backBtn.disabled = true;
+    restartBtn.disabled = true;
     const payload = buildPayload();
-    console.log("FINAL PAYLOAD:", payload);
-
-    setTimeout(() => {
+    console.log("ENVIANDO PAYLOAD:");
+    console.log(payload);
+    try {
+        const response = await fetch("/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            throw new Error("El servidor respondió con un error.");
+        }
+        const result = await response.json();
+        console.log("RESPUESTA DEL SERVIDOR:");
+        console.log(result);
         loading.classList.add("hidden");
         showResults(payload);
-    }, 1800);
+    } catch (error) {
+        console.error(error);
+        loading.classList.add("hidden");
+        nextBtn.disabled = false;
+        backBtn.disabled = false;
+        restartBtn.disabled = false;
+        alert("No fue posible conectar con el servidor.");
+    }
 }
 
 function showResults(payload) {
@@ -597,11 +653,11 @@ function exportPDF() {
 function buildPayload() {
     return {
         uuid_usuario: state.uuid_usuario,
-        nombre_usuario: "User Frontend",
+        nombre_usuario: answers.nombre_usuario,
         country: mapValues.country[answers.country] || answers.country,
-        job_role: mapValues.job_role[answers.job_role] || answers.job_role,
-        ai_specialization: mapValues.ai_specialization[answers.ai_specialization] || answers.ai_specialization,
-        experience_level: mapValues.experience_level[answers.experience_level] || answers.experience_level,
+        job_role: answers.job_role,
+        ai_specialization: answers.ai_specialization,
+        experience_level: answers.experience_level,
         experience_years: answers.experience_years,
         education_required: mapValues.education_required[answers.education_required] || answers.education_required,
         industry: mapValues.industry[answers.industry] || answers.industry,
@@ -609,8 +665,8 @@ function buildPayload() {
         work_mode: mapValues.work_mode[answers.work_mode] || answers.work_mode,
         weekly_hours: answers.weekly_hours,
         idioma_ingles: mapValues.idioma_ingles[answers.idioma_ingles] || answers.idioma_ingles,
-        github_profile: answers.github_profile === "Sí" ? "Yes" : "No",
-        programming_level: mapValues.experience_level[answers.programming_level] || answers.programming_level,
-        certifications: answers.certifications === "Sí" ? "Yes" : "No"
+        github_profile: answers.github_profile === "Sí",
+        programming_level: answers.programming_level,
+        certifications: answers.certifications === "Sí"
     };
 }

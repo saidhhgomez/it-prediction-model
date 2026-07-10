@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Career Predictor | Resultado</title>
+
+    <link rel="stylesheet" href="/css/result.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+    <div class="background-glow"></div>
+
+    <!-- ==========================================================
+HEADER
+========================================================== -->
+
+    <header class="topbar">
+
+        <a href="/" class="logo">
+
+            <img src="/img/logo-autonoma.png" alt="logo">
+
+            <div>
+
+                <h1>AI Career Predictor</h1>
+
+                <span>Resultado de la Evaluación</span>
+
+            </div>
+
+        </a>
+
+    </header>
+
+    <!-- ==========================================================
+MAIN
+========================================================== -->
+
+    <main class="main-container">
+
+        <!-- ======================================================
+    PRESENTACIÓN
+    ======================================================= -->
+
+        <section class="glass-card hero-card">
+
+            <span class="badge">
+
+                🤖 Evaluación completada
+
+            </span>
+
+            <h2 id="reportTitle">
+
+                Cargando análisis...
+
+            </h2>
+
+            <p id="reportIntro">
+
+                Generando interpretación...
+
+            </p>
+
+            <div id="profileInfo" class="profile-grid">
+
+            </div>
+
+        </section>
+
+        <section class="glass-card">
+
+            <h3>
+
+                Resumen Ejecutivo
+
+            </h3>
+
+            <div id="executiveSummary">
+
+            </div>
+
+        </section>
+
+        <!-- ======================================================
+    KPIs
+    ======================================================= -->
+
+        <section class="kpi-section">
+
+            <div id="kpiContainer" class="kpi-grid">
+
+            </div>
+
+        </section>
+
+        <!-- ======================================================
+    PROBABILIDADES
+    ======================================================= -->
+
+        <section class="glass-card">
+
+            <h3>
+
+                Probabilidad de Demanda Futura
+
+            </h3>
+
+            <div id="probabilitiesContainer">
+
+            </div>
+
+        </section>
+
+        <div class="section-description">
+
+            Distribución de confianza obtenida por el modelo de Machine Learning.
+
+        </div>
+
+        <!-- ======================================================
+    GRÁFICO
+    ======================================================= -->
+
+        <section class="glass-card">
+
+            <h3>
+
+                Indicadores del Perfil Profesional
+
+            </h3>
+
+            <canvas id="predictionChart"></canvas>
+
+        </section>
+
+        <div class="section-description">
+
+            Comparación de los principales indicadores calculados para tu perfil.
+
+        </div>
+
+        <!-- ======================================================
+    RESUMEN
+    ======================================================= -->
+
+        <section class="glass-card">
+
+            <h3>
+
+                Perfil Profesional
+
+            </h3>
+
+            <div class="timeline-card">
+
+                <p id="careerSummary"></p>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================================
+    DEMANDA
+    ======================================================= -->
+
+        <section class="glass-card">
+
+            <h3>
+
+                Demanda Futura
+
+            </h3>
+
+            <p id="futureDemandDescription"></p>
+
+            <div class="recommendation">
+
+                <div class="recommendation-icon">
+
+                    💡
+
+                </div>
+
+                <div>
+
+                    <strong>
+
+                        Recomendación
+
+                    </strong>
+
+                    <p id="futureDemandRecommendation"></p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================================
+    AUTOMATIZACIÓN
+    ======================================================= -->
+
+        <section class="glass-card">
+
+            <h3>
+
+                Riesgo de Automatización
+
+            </h3>
+
+            <p id="automationDescription"></p>
+
+            <div class="recommendation">
+
+                <div class="recommendation-icon">
+
+                    💡
+
+                </div>
+
+                <div>
+
+                    <strong>
+
+                        Recomendación
+
+                    </strong>
+
+                    <p id="automationRecommendation"></p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================================
+    CRECIMIENTO
+    ======================================================= -->
+
+        <section class="glass-card">
+
+            <h3>
+
+                Crecimiento Profesional
+
+            </h3>
+
+            <p id="growthDescription"></p>
+
+            <div class="recommendation">
+
+                <div class="recommendation-icon">
+
+                    💡
+
+                </div>
+
+                <div>
+
+                    <strong>
+
+                        Recomendación
+
+                    </strong>
+
+                    <p id="growthRecommendation"></p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================================
+    SALARIO
+    ======================================================= -->
+
+        <section class="glass-card">
+
+            <h3>
+
+                Proyección Salarial
+
+            </h3>
+
+            <p id="salaryDescription"></p>
+
+        </section>
+
+        <!-- ======================================================
+    MERCADO
+    ======================================================= -->
+
+        <section class="glass-card">
+
+            <h3>
+
+                Panorama del Mercado
+
+            </h3>
+
+            <div class="section-description">
+
+                Indicadores obtenidos del dataset utilizados por el modelo para comparar tu perfil con el mercado
+                laboral.
+
+            </div>
+
+            <div class="market-grid">
+
+                <div class="market-item">
+
+                    <span>Skill Demand</span>
+
+                    <strong id="skillDemand"></strong>
+
+                </div>
+
+                <div class="market-item">
+
+                    <span>Job Openings</span>
+
+                    <strong id="jobOpenings"></strong>
+
+                </div>
+
+                <div class="market-item">
+
+                    <span>Job Security</span>
+
+                    <strong id="jobSecurity"></strong>
+
+                </div>
+
+                <div class="market-item">
+
+                    <span>AI Adoption</span>
+
+                    <strong id="aiAdoption"></strong>
+
+                </div>
+
+                <div class="market-item">
+
+                    <span>Perfiles similares</span>
+
+                    <strong id="similarProfiles"></strong>
+
+                </div>
+
+            </div>
+
+            <p id="marketDescription"></p>
+
+        </section>
+
+        <!-- ======================================================
+    CONSEJOS IA
+    ======================================================= -->
+
+        <div class="section-description">
+
+            La Inteligencia Artificial identificó estas oportunidades de mejora.
+
+        </div>
+
+        <section class="glass-card">
+
+            <h3>
+
+                Recomendaciones Personalizadas
+
+            </h3>
+
+            <ul class="advice-list">
+
+                <li id="githubAdvice"></li>
+
+                <li id="englishAdvice"></li>
+
+                <li id="certificationAdvice"></li>
+
+            </ul>
+
+        </section>
+
+        <!-- ======================================================
+    MODELO
+    ======================================================= -->
+
+        <section class="glass-card">
+
+            <h3>
+
+                Información del Modelo
+
+            </h3>
+
+            <div class="section-description">
+
+                Métricas de rendimiento del modelo predictivo utilizado durante la evaluación.
+
+            </div>
+
+            <div class="model-grid">
+
+                <div class="market-item">
+
+                    <span>Accuracy</span>
+
+                    <strong id="accuracy"></strong>
+
+                </div>
+
+                <div class="market-item">
+
+                    <span>Precision</span>
+
+                    <strong id="precision"></strong>
+
+                </div>
+
+                <div class="market-item">
+
+                    <span>Recall</span>
+
+                    <strong id="recall"></strong>
+
+                </div>
+
+                <div class="market-item">
+
+                    <span>F1 Score</span>
+
+                    <strong id="f1Score"></strong>
+
+                </div>
+
+            </div>
+
+            <p id="modelDescription"></p>
+
+        </section>
+
+        <!-- ======================================================
+    DISCLAIMER
+    ======================================================= -->
+
+        <section class="glass-card">
+
+            <h3>
+
+                Aviso
+
+            </h3>
+
+            <p id="disclaimer"></p>
+
+        </section>
+
+        <section class="glass-card">
+
+            <h3>
+
+                Próximos pasos
+
+            </h3>
+
+            <p>
+
+                Puedes descargar este informe en formato PDF para conservar tu evaluación o consultar todas tus
+                evaluaciones anteriores desde el historial.
+
+            </p>
+
+        </section>
+
+        <!-- ======================================================
+    BOTONES
+    ======================================================= -->
+
+        <section class="buttons">
+
+            <button id="historyBtn" class="btn-secondary">
+
+                Historial de Evaluaciones
+
+            </button>
+
+            <button id="pdfBtn" class="btn-primary">
+
+                Descargar Informe PDF
+
+            </button>
+
+        </section>
+
+    </main>
+    <script src="/js/result.js"></script>
+</body>
+
+</html>
