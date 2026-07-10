@@ -1,0 +1,92 @@
+{
+    "input_profile": {
+        "uuid_usuario": "c8903994-3f3f-43f9-8d86-a02e409ccc83",
+        "country": "Germany",
+        "job_role": "Machine Learning Engineer",
+        "ai_specialization": "Generative AI",
+        "experience_level": "Entry",
+        "experience_years": 15,
+        "education_required": "Master",
+        "industry": "Finance",
+        "company_size": "Small",
+        "work_mode": "Onsite",
+        "weekly_hours": 50,
+        "idioma_ingles": "Basic",
+        "github_profile": false,
+        "programming_level": "Mid",
+        "certifications": false,
+        "nombre_usuario": "Diego Paolo"
+    },
+    "future_demand": {
+        "level": "Media",
+        "confidence": 99.29,
+        "probabilities": {
+            "Alta": 0.28,
+            "Baja": 0.43,
+            "Media": 99.29
+        }
+    },
+    "automation_risk": {
+        "level": "Medio",
+        "score": 51.41
+    },
+    "career_growth": {
+        "level": "Medio",
+        "score": 55.96
+    },
+    "salary_projection": {
+        "level": "Bajo",
+        "average_salary_usd": 64471.25
+    },
+    "market_indicators": {
+        "skill_demand_score": 49.35,
+        "job_openings": 17.64,
+        "job_security_score": 61.12,
+        "ai_adoption_score": 70.24
+    },
+    "model_information": {
+        "accuracy": 98.21,
+        "precision": 98.21,
+        "recall": 98.21,
+        "f1_score": 98.2,
+        "dataset": "Global AI and Data Jobs Salary Dataset"
+    },
+    "similar_profiles_found": 545,
+    "feedback": {
+        "title": "Análisis Profesional para Diego Paolo: Ingeniero de Machine Learning en Alemania",
+        "intro": "Diego Paolo, a continuación se presenta una estimación basada en datos históricos y modelos predictivos sobre tu carrera como Ingeniero de Machine Learning especializado en Generative AI en el sector financiero en Alemania.",
+        "career_summary": "Como Ingeniero de Machine Learning con especialización en Generative AI, tu rol implica diseñar, desarrollar y optimizar modelos de inteligencia artificial que generan contenido nuevo y relevante, aplicados en finanzas para mejorar procesos y tomar decisiones basadas en datos. Con 15 años de experiencia y un nivel medio en programación, tu perfil se encuentra en una empresa pequeña con modalidad onsite y un nivel básico de inglés.",
+        "future_demand": {
+            "title": "Demanda Futura",
+            "description": "El modelo sugiere una demanda media para tu perfil en el futuro cercano, con una confianza alta del 99.29%. Esto podría indicar que, aunque la especialización en Generative AI es relevante, la competencia y la evolución del mercado podrían equilibrar las oportunidades disponibles.",
+            "recommendation": "Se recomienda mantenerte actualizado en las últimas tendencias de Generative AI y considerar ampliar tus habilidades para aumentar tu atractivo en el mercado laboral."
+        },
+        "automation_risk": {
+            "title": "Riesgo de Automatización",
+            "description": "El riesgo de automatización para tu puesto se estima como medio, con un puntaje de 51.41%. Esto podría indicar que ciertas tareas rutinarias dentro de tu rol podrían ser automatizadas, pero la complejidad y creatividad requerida en Generative AI ofrecen un grado de protección.",
+            "recommendation": "Fortalecer habilidades en áreas creativas y estratégicas dentro de tu especialización podría reducir aún más este riesgo."
+        },
+        "career_growth": {
+            "title": "Crecimiento Profesional",
+            "description": "El crecimiento profesional se observa con una tendencia media, con un puntaje de 55.96%. Esto sugiere que existen oportunidades para avanzar en tu carrera, aunque podrían requerirse esfuerzos adicionales en formación continua y networking.",
+            "recommendation": "Considera obtener certificaciones relevantes y mejorar tu nivel de inglés para acceder a mejores posiciones y proyectos internacionales."
+        },
+        "salary_projection": {
+            "title": "Proyección Salarial",
+            "description": "El salario promedio estimado para tu perfil es de aproximadamente USD 64,471.25, lo que se considera un nivel bajo en comparación con otros perfiles similares en la industria de IA en finanzas en Alemania."
+        },
+        "market_analysis": {
+            "title": "Análisis del Mercado",
+            "description": "Se observa una demanda de habilidades moderada (49.35), seguridad laboral aceptable (61.12) y una adopción de IA relativamente alta (70.24). Sin embargo, las ofertas laborales específicas para tu perfil son limitadas (17.64), lo que podría reflejar la competencia o la especialización en un nicho particular."
+        },
+        "github_advice": "Dado que no cuentas con un perfil en GitHub, se recomienda crear uno para mostrar tus proyectos y contribuciones en Generative AI, lo cual puede mejorar tu visibilidad y oportunidades laborales.",
+        "english_advice": "Con un nivel básico de inglés, sería beneficioso invertir en mejorar esta habilidad para facilitar la comunicación en entornos internacionales y acceder a recursos y oportunidades globales.",
+        "certification_advice": "Obtener certificaciones relevantes en Machine Learning y Generative AI podría fortalecer tu perfil y aumentar tus posibilidades de crecimiento y mejores salarios.",
+        "model_information": {
+            "title": "Información del Modelo",
+            "description": "El análisis se basa en un modelo con alta precisión (98.21%) y confiabilidad, utilizando el dataset Global AI and Data Jobs Salary Dataset de Kaggle, comparando tu perfil con 545 perfiles similares para generar estas estimaciones."
+        },
+        "dataset": "Global AI and Data Jobs Salary Dataset (Kaggle)",
+        "disclaimer": "Esta interpretación está basada en estimaciones y tendencias observadas en datos históricos y modelos predictivos. No debe considerarse una garantía absoluta de resultados futuros."
+    }
+}

@@ -4,34 +4,23 @@
    Parte 1
 ========================================================== */
 
+let prediction = null;
+
 let predictionChart = null;
-
-/* ==========================================================
-   CARGAR RESULTADO
-========================================================== */
-
-const prediction = JSON.parse(sessionStorage.getItem("prediction_result"));
-
-if (!prediction) {
-
-    alert("No existe ninguna evaluación disponible.");
-
-    window.location.href = "/predict";
-
-}
 
 /* ==========================================================
    REFERENCIAS
 ========================================================== */
 
-const title = document.getElementById("resultTitle");
-const subtitle = document.getElementById("resultSubtitle");
+const title = document.getElementById("reportTitle");
+
+const subtitle = document.getElementById("reportIntro");
 
 const profileInfo = document.getElementById("profileInfo");
 
 const kpiContainer = document.getElementById("kpiContainer");
 
-const probabilityContainer = document.getElementById("probabilityContainer");
+const probabilityContainer = document.getElementById("probabilitiesContainer");
 
 const chartCanvas = document.getElementById("predictionChart");
 
@@ -39,7 +28,9 @@ const chartCanvas = document.getElementById("predictionChart");
    INICIO
 ========================================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
+    await loadPrediction();
 
     renderHeader();
 
@@ -50,6 +41,26 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProbabilityBars();
 
     renderChart();
+
+    renderExecutiveSummary();
+
+    renderCareerSummary();
+
+    renderFutureDemand();
+
+    renderAutomation();
+
+    renderCareerGrowth();
+
+    renderSalary();
+
+    renderMarket();
+
+    renderAdvices();
+
+    renderModelInformation();
+
+    renderDisclaimer();
 
 });
 
@@ -77,21 +88,21 @@ function renderProfile() {
 
         <div class="profile-grid">
 
-            <div><strong>Nombre</strong><span>${p.nombre_usuario}</span></div>
+            <div><strong>Nombre: </strong><span>${p.nombre_usuario}</span></div>
 
-            <div><strong>País</strong><span>${p.country}</span></div>
+            <div><strong>País: </strong><span>${p.country}</span></div>
 
-            <div><strong>Rol</strong><span>${p.job_role}</span></div>
+            <div><strong>Rol: </strong><span>${p.job_role}</span></div>
 
-            <div><strong>Especialización</strong><span>${p.ai_specialization}</span></div>
+            <div><strong>Especialización: </strong><span>${p.ai_specialization}</span></div>
 
-            <div><strong>Experiencia</strong><span>${p.experience_years} años</span></div>
+            <div><strong>Experiencia: </strong><span>${p.experience_years} años</span></div>
 
-            <div><strong>Nivel</strong><span>${p.experience_level}</span></div>
+            <div><strong>Nivel: </strong><span>${p.experience_level}</span></div>
 
-            <div><strong>Industria</strong><span>${p.industry}</span></div>
+            <div><strong>Industria: </strong><span>${p.industry}</span></div>
 
-            <div><strong>Empresa</strong><span>${p.company_size}</span></div>
+            <div><strong>Empresa: </strong><span>${p.company_size}</span></div>
 
         </div>
 
@@ -137,7 +148,10 @@ function renderKPIs() {
 
             <span>
 
-                USD ${prediction.salary_projection.average_salary_usd.toLocaleString()}
+                USD ${prediction.salary_projection.average_salary_usd.toLocaleString("en-US",
+        {
+            maximumFractionDigits: 0
+        })}
 
             </span>
 
@@ -157,7 +171,7 @@ function renderProbabilityBars() {
 
     probabilityContainer.innerHTML = "";
 
-    Object.entries(probs).forEach(([name,value])=>{
+    Object.entries(probs).forEach(([name, value]) => {
 
         probabilityContainer.innerHTML += `
 
@@ -194,19 +208,19 @@ function renderProbabilityBars() {
 
 function renderChart() {
 
-    if(predictionChart){
+    if (predictionChart) {
 
         predictionChart.destroy();
 
     }
 
-    predictionChart = new Chart(chartCanvas,{
+    predictionChart = new Chart(chartCanvas, {
 
-        type:"bar",
+        type: "bar",
 
-        data:{
+        data: {
 
-            labels:[
+            labels: [
 
                 "Demanda",
 
@@ -220,11 +234,11 @@ function renderChart() {
 
             ],
 
-            datasets:[{
+            datasets: [{
 
-                label:"Score",
+                label: "Score",
 
-                data:[
+                data: [
 
                     prediction.future_demand.confidence,
 
@@ -242,27 +256,27 @@ function renderChart() {
 
         },
 
-        options:{
+        options: {
 
-            responsive:true,
+            responsive: true,
 
-            plugins:{
+            plugins: {
 
-                legend:{
+                legend: {
 
-                    display:false
+                    display: false
 
                 }
 
             },
 
-            scales:{
+            scales: {
 
-                y:{
+                y: {
 
-                    beginAtZero:true,
+                    beginAtZero: true,
 
-                    max:100
+                    max: 100
 
                 }
 
@@ -273,108 +287,6 @@ function renderChart() {
     });
 
 }
-
-/* ==========================================================
-   CHART
-========================================================== */
-
-function renderChart() {
-
-    if(predictionChart){
-
-        predictionChart.destroy();
-
-    }
-
-    predictionChart = new Chart(chartCanvas,{
-
-        type:"bar",
-
-        data:{
-
-            labels:[
-
-                "Demanda",
-
-                "Automatización",
-
-                "Crecimiento",
-
-                "Seguridad",
-
-                "IA"
-
-            ],
-
-            datasets:[{
-
-                label:"Score",
-
-                data:[
-
-                    prediction.future_demand.confidence,
-
-                    prediction.automation_risk.score,
-
-                    prediction.career_growth.score,
-
-                    prediction.market_indicators.job_security_score,
-
-                    prediction.market_indicators.ai_adoption_score
-
-                ]
-
-            }]
-
-        },
-
-        options:{
-
-            responsive:true,
-
-            plugins:{
-
-                legend:{
-
-                    display:false
-
-                }
-
-            },
-
-            scales:{
-
-                y:{
-
-                    beginAtZero:true,
-
-                    max:100
-
-                }
-
-            }
-
-        }
-
-    });
-
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    renderHeader();
-
-    renderProfile();
-
-    renderKPIs();
-
-    renderProbabilityBars();
-
-    renderChart();
-
-    renderReport();
-
-});
 
 /* ==========================================================
    RESUMEN PROFESIONAL
@@ -384,6 +296,16 @@ function renderCareerSummary() {
 
     document.getElementById("careerSummary").innerText =
         prediction.feedback.career_summary;
+
+}
+
+function renderExecutiveSummary() {
+
+    document.getElementById("executiveSummary").innerHTML = `
+
+        <p>${prediction.feedback.intro}</p>
+
+    `;
 
 }
 
@@ -449,44 +371,16 @@ function renderMarket() {
     const market = prediction.market_indicators;
 
     document.getElementById("skillDemand").innerText =
-        market.skill_demand_score.toFixed(2);
+        market.skill_demand_score.toFixed(2) + "%";
 
     document.getElementById("jobOpenings").innerText =
-        market.job_openings.toFixed(2);
+        market.job_openings.toFixed(2) + "%";
 
     document.getElementById("jobSecurity").innerText =
-        market.job_security_score.toFixed(2);
+        market.job_security_score.toFixed(2) + "%";
 
     document.getElementById("aiAdoption").innerText =
-        market.ai_adoption_score.toFixed(2);
-
-    document.getElementById("similarProfiles").innerText =
-        prediction.similar_profiles_found;
-
-    document.getElementById("marketDescription").innerText =
-        prediction.feedback.market_analysis.description;
-
-}
-
-/* ==========================================================
-   MERCADO
-========================================================== */
-
-function renderMarket() {
-
-    const market = prediction.market_indicators;
-
-    document.getElementById("skillDemand").innerText =
-        market.skill_demand_score.toFixed(2);
-
-    document.getElementById("jobOpenings").innerText =
-        market.job_openings.toFixed(2);
-
-    document.getElementById("jobSecurity").innerText =
-        market.job_security_score.toFixed(2);
-
-    document.getElementById("aiAdoption").innerText =
-        market.ai_adoption_score.toFixed(2);
+        market.ai_adoption_score.toFixed(2) + "%";
 
     document.getElementById("similarProfiles").innerText =
         prediction.similar_profiles_found;
@@ -569,7 +463,7 @@ pdfBtn.addEventListener("click", exportPDF);
    EXPORTAR PDF
 ========================================================== */
 
-function exportPDF(){
+function exportPDF() {
 
     alert("La exportación en PDF será implementada en la siguiente fase.");
 
@@ -579,9 +473,9 @@ function exportPDF(){
    REFRESCAR GRÁFICO
 ========================================================== */
 
-function destroyChart(){
+function destroyChart() {
 
-    if(predictionChart){
+    if (predictionChart) {
 
         predictionChart.destroy();
 
@@ -592,46 +486,25 @@ function destroyChart(){
 }
 
 /* ==========================================================
-   LIMPIAR SESIÓN
+   CARGAR JSON DE PRUEBA
 ========================================================== */
 
-function clearPrediction(){
+async function loadPrediction() {
 
-    sessionStorage.removeItem("prediction_result");
+    try {
 
-}
+        const response = await fetch("/data/report.json");
 
+        console.log(response);
 
-/* ==========================================================
-   OBTENER RESULTADO
-========================================================== */
+        prediction = await response.json();
 
-async function loadPrediction(){
+        console.log(prediction);
 
-    return prediction;
+    } catch (error) {
 
-}
+        console.error(error);
 
-/* ==========================================================
-   OBTENER RESULTADO
-========================================================== */
-
-async function loadPrediction(){
-
-    return prediction;
+    }
 
 }
-
-const result = await response.json();
-
-sessionStorage.setItem(
-
-    "prediction_result",
-
-    JSON.stringify(result)
-
-);
-
-loading.classList.add("hidden");
-
-window.location.href = "/result";
