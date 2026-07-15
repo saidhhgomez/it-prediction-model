@@ -60,6 +60,96 @@ router.get("/predict/can-predict/:uuid", async (req, res) => {
 
 /*
 ===========================================================
+GET /history/:uuid
+Obtiene el historial de evaluaciones del usuario.
+===========================================================
+*/
+
+router.get("/history/:uuid", async (req, res) => {
+
+    try {
+
+        const { uuid } = req.params;
+
+        const response = await axios.get(
+
+            `${FASTAPI_URL}/history/${uuid}`
+
+        );
+
+        return res.status(response.status).json(response.data);
+
+    }
+
+    catch (error) {
+
+        if (error.response) {
+
+            return res
+                .status(error.response.status)
+                .json(error.response.data);
+
+        }
+
+        return res.status(500).json({
+
+            success: false,
+
+            message: "No fue posible obtener el historial."
+
+        });
+
+    }
+
+});
+
+/*
+===========================================================
+GET /result/:id
+Obtiene un resultado específico desde FastAPI.
+===========================================================
+*/
+
+router.get("/result/:id", async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const response = await axios.get(
+
+            `${FASTAPI_URL}/result/${id}`
+
+        );
+
+        return res.status(response.status).json(response.data);
+
+    }
+
+    catch (error) {
+
+        if (error.response) {
+
+            return res
+                .status(error.response.status)
+                .json(error.response.data);
+
+        }
+
+        return res.status(500).json({
+
+            success: false,
+
+            message: "No fue posible obtener el informe."
+
+        });
+
+    }
+
+});
+
+/*
+===========================================================
 POST /predict
 Recibe la petición del Frontend y la reenvía a FastAPI.
 ===========================================================

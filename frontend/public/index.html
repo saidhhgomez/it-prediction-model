@@ -1156,6 +1156,77 @@
 
     </footer>
 
+    <!-- ==================================================
+     MODAL BLOQUEO DE EVALUACIÓN
+================================================== -->
+
+    <div id="blockedModal" class="modal-overlay hidden">
+
+        <div class="modal-card">
+
+            <div class="modal-icon">
+
+                ⏳
+
+            </div>
+
+            <h2>
+
+                Ya realizaste una evaluación
+
+            </h2>
+
+            <p>
+
+                Para garantizar resultados consistentes, cada usuario puede generar
+                una nueva evaluación cada <strong>12 horas</strong>.
+
+            </p>
+
+            <div class="modal-warning">
+
+                <strong>Tiempo restante</strong>
+
+                <h3 id="remainingTime">
+
+                    0 horas
+
+                </h3>
+
+                <small>
+
+                    Disponible nuevamente el
+
+                </small>
+
+                <br>
+
+                <strong id="nextEvaluationDate">
+
+                </strong>
+
+            </div>
+
+            <div class="modal-buttons">
+
+                <button id="backHomeBtn" class="btn-secondary">
+
+                    Volver al inicio
+
+                </button>
+
+                <button id="historyBtn" class="btn-primary">
+
+                    Ver historial
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
 
     <script src="js/main.js"></script>
 

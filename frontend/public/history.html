@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Historial de Evaluaciones | AI Career Predictor</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="css/history.css">
+
+</head>
+
+<body>
+
+    <!-- ==========================================
+            NAVBAR
+    =========================================== -->
+
+    <header class="navbar">
+
+        <div class="container navbar-content">
+
+            <div class="logo">
+
+                <img src="img/logo-autonoma.png"
+                     alt="Logo">
+
+                <div>
+
+                    <h2>AI Career Predictor</h2>
+
+                    <span>Historial de Evaluaciones</span>
+
+                </div>
+
+            </div>
+
+            <nav>
+
+                <a href="/">Inicio</a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+    <!-- ==========================================
+            HERO
+    =========================================== -->
+
+    <section class="hero">
+
+        <div class="container">
+
+            <div class="hero-content">
+
+                <span class="badge">
+
+                    Historial Personal
+
+                </span>
+
+                <h1>
+
+                    Todas tus
+                    <span>evaluaciones realizadas</span>
+
+                </h1>
+
+                <p>
+
+                    Consulta cualquiera de tus análisis anteriores,
+                    compara perfiles profesionales y vuelve a visualizar
+                    los informes generados por Inteligencia Artificial.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+            RESUMEN
+    =========================================== -->
+
+    <section class="summary">
+
+        <div class="container">
+
+            <div class="summary-card">
+
+                <div>
+
+                    <span class="summary-label">
+
+                        Evaluaciones registradas
+
+                    </span>
+
+                    <h2 id="totalEvaluations">
+
+                        0
+
+                    </h2>
+
+                </div>
+
+                <div class="summary-icon">
+
+                    📊
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+            LOADING
+    =========================================== -->
+
+    <section id="loadingSection"
+             class="loading-section">
+
+        <div class="loading-spinner"></div>
+
+        <p>
+
+            Cargando historial...
+
+        </p>
+
+    </section>
+
+    <!-- ==========================================
+            HISTORIAL
+    =========================================== -->
+
+    <section id="historySection"
+             class="history-section hidden">
+
+        <div class="container">
+
+            <div id="historyContainer"
+                 class="history-grid">
+
+                <!--
+                    Las cards se generan desde history.js
+                -->
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+            EMPTY STATE
+    =========================================== -->
+
+    <section id="emptyState"
+             class="empty-state hidden">
+
+        <div class="empty-card">
+
+            <div class="empty-icon">
+
+                🧠
+
+            </div>
+
+            <h2>
+
+                Todavía no tienes evaluaciones
+
+            </h2>
+
+            <p>
+
+                Cuando completes tu primera evaluación,
+                aquí aparecerá el historial completo de
+                tus análisis profesionales.
+
+            </p>
+
+            <a href="/predict"
+               class="btn-primary">
+
+                Realizar primera evaluación
+
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+            TEMPLATE CARD
+            (history.js lo utilizará)
+    =========================================== -->
+
+    <template id="historyCardTemplate">
+
+        <article class="history-card">
+
+            <div class="history-top">
+
+                <div>
+
+                    <span class="country">
+
+                    </span>
+
+                    <h3 class="role">
+
+                    </h3>
+
+                    <span class="specialization">
+
+                    </span>
+
+                </div>
+
+                <div class="demand-indicator">
+
+                </div>
+
+            </div>
+
+            <div class="history-badges">
+
+                <span class="badge-demand">
+
+                </span>
+
+                <span class="badge-growth">
+
+                </span>
+
+                <span class="badge-risk">
+
+                </span>
+
+                <span class="badge-salary">
+
+                </span>
+
+            </div>
+
+            <div class="history-footer">
+
+                <div class="evaluation-date">
+
+                </div>
+
+                <button class="btn-primary view-report">
+
+                    Ver informe
+
+                </button>
+
+            </div>
+
+        </article>
+
+    </template>
+
+    <script src="js/history.js"></script>
+
+</body>
+
+</html>
