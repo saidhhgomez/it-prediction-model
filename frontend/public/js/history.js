@@ -1,3 +1,24 @@
+/* ==========================================================
+   PROTECCIÓN DE ACCESO
+========================================================== */
+
+(function () {
+
+    const allowed = sessionStorage.getItem("allow_history_access");
+
+    if (allowed !== "true") {
+
+        window.location.replace("/");
+
+        return;
+
+    }
+
+    // Consumimos el permiso.
+    sessionStorage.removeItem("allow_history_access");
+
+})();
+
 /*
 =========================================================
 ELEMENTOS
@@ -139,6 +160,8 @@ async function loadReport(idResultado) {
             JSON.stringify(data)
 
         );
+
+        sessionStorage.setItem("allow_result_access", "true");
 
         window.location.href = "/result";
 

@@ -4,6 +4,25 @@
    Parte 1
 ========================================================== */
 
+/* ==========================================================
+   PROTECCIÓN DE ACCESO
+========================================================== */
+
+(function () {
+
+    const allowed = sessionStorage.getItem("allow_result_access");
+    const hasData = sessionStorage.getItem("predictionResult");
+
+    if (allowed !== "true" || !hasData) {
+
+        window.location.replace("/");
+
+        return;
+
+    }
+
+})();
+
 let prediction = null;
 
 let predictionChart = null;
@@ -452,6 +471,8 @@ const historyBtn = document.getElementById("historyBtn");
 const pdfBtn = document.getElementById("pdfBtn");
 
 historyBtn.addEventListener("click", () => {
+
+    sessionStorage.setItem("allow_history_access", "true");
 
     window.location.href = "/history";
 

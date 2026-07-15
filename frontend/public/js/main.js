@@ -10,26 +10,29 @@ const backHomeBtn = document.getElementById("backHomeBtn");
 
 historyBtn.addEventListener("click", () => {
 
+    // Permitir una única entrada a /history
+    sessionStorage.setItem("allow_history_access", "true");
+
     window.location = "/history";
 
 });
 
 backHomeBtn.addEventListener("click", closeBlockedModal);
 
-function closeBlockedModal(){
+function closeBlockedModal() {
 
-    if(blockedModal.classList.contains("closing")){
+    if (blockedModal.classList.contains("closing")) {
         return;
     }
 
     blockedModal.classList.add("closing");
 
-    setTimeout(()=>{
+    setTimeout(() => {
 
         blockedModal.classList.remove("closing");
         blockedModal.classList.add("hidden");
 
-    },250);
+    }, 250);
 
 }
 
@@ -71,7 +74,7 @@ function formatDate(dateString) {
 
 }
 
-function openBlockedModal(data){
+function openBlockedModal(data) {
 
     remainingTime.textContent =
         formatRemainingHours(data.remaining_hours);
@@ -135,6 +138,8 @@ async function checkPredictionStatus() {
         console.log(data);
 
         if (data.can_predict) {
+
+            sessionStorage.setItem("allow_predict_access", "true");
 
             window.location.href = "/predict";
 

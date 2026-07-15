@@ -4,6 +4,28 @@
 ========================================================== */
 
 /* ==========================================================
+   PROTECCIÓN DE ACCESO
+========================================================== */
+
+(function () {
+
+    const allowed = sessionStorage.getItem("allow_predict_access");
+
+    if (allowed !== "true") {
+
+        window.location.replace("/");
+
+        return;
+
+    }
+
+    // Consumimos el permiso.
+    sessionStorage.removeItem("allow_predict_access");
+
+})();
+
+
+/* ==========================================================
    CONFIGURACIÓN Y ESTADO GLOBAL
 ========================================================== */
 const TOTAL_QUESTIONS = 15;
@@ -587,6 +609,7 @@ async function finishForm() {
             "predictionResult",
             JSON.stringify(result)
         );
+        sessionStorage.setItem("allow_result_access", "true");
         window.location.href = "/result";
     }
     catch (error) {
