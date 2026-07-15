@@ -486,7 +486,13 @@ pdfBtn.addEventListener("click", exportPDF);
 
 function exportPDF() {
 
-    alert("La exportación en PDF será implementada en la siguiente fase.");
+    window.scrollTo(0, 0);
+
+    setTimeout(() => {
+
+        window.print();
+
+    }, 300);
 
 }
 

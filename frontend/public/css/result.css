@@ -876,3 +876,351 @@ RESPONSIVE
     }
 
 }
+
+/* ==========================================================
+   PRINT MODE
+========================================================== */
+
+@page {
+    size: A4 portrait;
+    margin: 12mm;
+}
+
+@media print {
+
+    html,
+    body {
+
+        width: auto !important;
+        height: auto !important;
+
+        background: #ffffff !important;
+        color: #1b1b1b !important;
+
+        font-size: 11pt;
+        line-height: 1.45;
+
+        overflow: visible !important;
+
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+
+    }
+
+    * {
+
+        animation: none !important;
+        transition: none !important;
+
+        text-shadow: none !important;
+        filter: none !important;
+
+    }
+
+    /* ======================================================
+       OCULTAR ELEMENTOS QUE NO DEBEN IMPRIMIRSE
+    ====================================================== */
+
+    .background-glow,
+    .topbar,
+    .buttons {
+
+        display: none !important;
+
+    }
+
+    /* ======================================================
+       CONTENEDOR PRINCIPAL
+    ====================================================== */
+
+    .main-container {
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+    }
+
+    /* ======================================================
+       TARJETAS
+    ====================================================== */
+
+    .glass-card {
+
+        background: #ffffff !important;
+
+        border: 1px solid #d9d9d9 !important;
+
+        border-radius: 8px !important;
+
+        padding: 18px !important;
+
+        margin-bottom: 16px !important;
+
+        box-shadow: none !important;
+
+        page-break-inside: avoid;
+        break-inside: avoid;
+
+    }
+
+    /* ======================================================
+       HERO
+    ====================================================== */
+
+    .hero-card {
+
+        text-align: center;
+
+    }
+
+    .hero-card h2 {
+
+        font-size: 24pt !important;
+        color: #111 !important;
+
+        margin-bottom: 10px;
+
+    }
+
+    .hero-card p {
+
+        color: #444 !important;
+
+    }
+
+    .badge {
+
+        background: #efefef !important;
+
+        color: #111 !important;
+
+        border: 1px solid #d9d9d9;
+
+    }
+
+    /* ======================================================
+       TITULOS
+    ====================================================== */
+
+    h1,
+    h2,
+    h3 {
+
+        color: #111 !important;
+
+        page-break-after: avoid;
+
+    }
+
+    p,
+    span,
+    div,
+    li {
+
+        color: #333 !important;
+
+    }
+
+    strong {
+
+        color: #000 !important;
+
+    }
+
+    /* ======================================================
+       KPI
+    ====================================================== */
+
+    .kpi-grid {
+
+        grid-template-columns: repeat(2, 1fr) !important;
+
+        gap: 12px;
+
+    }
+
+    .kpi-card {
+
+        background: #fafafa !important;
+
+        border: 1px solid #dddddd !important;
+
+        box-shadow: none !important;
+
+    }
+
+    .kpi-card strong {
+
+        color: #0d4f9a !important;
+
+    }
+
+    /* ======================================================
+       MARKET
+    ====================================================== */
+
+    .market-grid {
+
+        grid-template-columns: repeat(2, 1fr) !important;
+
+    }
+
+    .market-item {
+
+        background: #fafafa !important;
+
+        border: 1px solid #ddd !important;
+
+    }
+
+    .market-item strong {
+
+        color: #0d4f9a !important;
+
+    }
+
+    /* ======================================================
+       MODEL
+    ====================================================== */
+
+    .model-grid {
+
+        grid-template-columns: repeat(2, 1fr) !important;
+
+    }
+
+    .model-card {
+
+        background: #fafafa !important;
+
+        border: 1px solid #ddd !important;
+
+    }
+
+    .model-card strong {
+
+        color: #0d4f9a !important;
+
+    }
+
+    /* ======================================================
+       PERFIL
+    ====================================================== */
+
+    .profile-grid {
+
+        grid-template-columns: repeat(2, 1fr) !important;
+
+    }
+
+    .profile-item {
+
+        background: #fafafa !important;
+
+        border: 1px solid #ddd !important;
+
+    }
+
+    /* ======================================================
+       RECOMENDACIONES
+    ====================================================== */
+
+    .recommendation {
+
+        background: #f7f7f7 !important;
+
+        border-left: 5px solid #f38c2c !important;
+
+    }
+
+    .advice-list li {
+
+        background: #fafafa !important;
+
+        border-left: 4px solid #f38c2c !important;
+
+    }
+
+    /* ======================================================
+       PROGRESS BAR
+    ====================================================== */
+
+    .progress {
+
+        background: #dddddd !important;
+
+    }
+
+    .progress div {
+
+        background: #f38c2c !important;
+
+    }
+
+    /* ======================================================
+       CHART
+    ====================================================== */
+
+    canvas {
+
+        display: block !important;
+
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        height: auto !important;
+
+        margin: 20px auto;
+
+        page-break-inside: avoid;
+
+    }
+
+    /* ======================================================
+       IMAGENES
+    ====================================================== */
+
+    img {
+
+        max-width: 100% !important;
+
+        page-break-inside: avoid;
+
+    }
+
+    /* ======================================================
+       ENLACES
+    ====================================================== */
+
+    a {
+
+        color: inherit !important;
+
+        text-decoration: none !important;
+
+    }
+
+    /* ======================================================
+       EVITAR CORTES FEOS
+    ====================================================== */
+
+    h1,
+    h2,
+    h3,
+    canvas,
+    .kpi-grid,
+    .market-grid,
+    .model-grid,
+    .profile-grid,
+    .recommendation {
+
+        page-break-inside: avoid;
+        break-inside: avoid;
+
+    }
+
+}
