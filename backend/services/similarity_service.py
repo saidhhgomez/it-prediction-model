@@ -15,96 +15,121 @@ class SimilarityService:
                 "Dataset is empty"
             )
 
-        # =====================================================
-        # NIVEL 1
-        # Coincidencia más específica
-        # =====================================================
+        dataset = df.copy()
 
-        filtered = df[
+        # ==========================================================
+        # SCORE DE SIMILITUD
+        # ==========================================================
 
-            (df["job_role"] == request.job_role)
+        dataset["similarity_score"] = 0
 
+        # Cargo (muy importante)
+
+        dataset.loc[
+            dataset["job_role"] == request.job_role,
+            "similarity_score"
+        ] += 50
+
+        # Nivel
+
+        dataset.loc[
+            dataset["experience_level"] == request.experience_level,
+            "similarity_score"
+        ] += 20
+
+        # Educación
+
+        dataset.loc[
+            dataset["education_required"] == request.education_required,
+            "similarity_score"
+        ] += 10
+
+        # Industria
+
+        dataset.loc[
+            dataset["industry"] == request.industry,
+            "similarity_score"
+        ] += 10
+
+        # Tamaño empresa
+
+        dataset.loc[
+            dataset["company_size"] == request.company_size,
+            "similarity_score"
+        ] += 5
+
+        # Modalidad
+
+        dataset.loc[
+            dataset["work_mode"] == request.work_mode,
+            "similarity_score"
+        ] += 5
+
+        # Experiencia (más flexible)
+
+        dataset.loc[
+            (
+                dataset["experience_years"]
+                .sub(request.experience_years)
+                .abs()
+                <= 1
+            ),
+            "similarity_score"
+        ] += 5
+
+        dataset.loc[
+            (
+                dataset["experience_years"]
+                .sub(request.experience_years)
+                .abs()
+                <= 2
+            )
             &
+            (
+                dataset["experience_years"]
+                .sub(request.experience_years)
+                .abs()
+                > 1
+            ),
+            "similarity_score"
+        ] += 3
 
-            (df["experience_level"] == request.experience_level)
+        # ==========================================================
+        # ELIMINAMOS PERFILES MUY DIFERENTES
+        # ==========================================================
 
-            &
-
-            (df["education_required"] == request.education_required)
-
-            &
-
-            (df["industry"] == request.industry)
-
-            &
-
-            (df["company_size"] == request.company_size)
-
+        dataset = dataset[
+            dataset["similarity_score"] >= 50
         ]
 
-        # =====================================================
-        # NIVEL 2
-        # Relajamos company_size
-        # =====================================================
-
-        if len(filtered) < 30:
-
-            filtered = df[
-
-                (df["job_role"] == request.job_role)
-
-                &
-
-                (df["experience_level"] == request.experience_level)
-
-                &
-
-                (df["education_required"] == request.education_required)
-
-                &
-
-                (df["industry"] == request.industry)
-
-            ]
-
-        # =====================================================
-        # NIVEL 3
-        # Relajamos industry
-        # =====================================================
-
-        if len(filtered) < 30:
-
-            filtered = df[
-
-                (df["job_role"] == request.job_role)
-
-                &
-
-                (df["experience_level"] == request.experience_level)
-
-                &
-
-                (df["education_required"] == request.education_required)
-
-            ]
-
-        # =====================================================
-        # NIVEL 4
-        # Sólo cargo
-        # =====================================================
-
-        if len(filtered) < 30:
-
-            filtered = df[
-
-                df["job_role"] == request.job_role
-
-            ]
-
-        if filtered.empty:
+        if dataset.empty:
 
             raise ValueError(
                 "No se encontraron perfiles similares"
             )
 
-        return filtered
+        # ==========================================================
+        # ORDENAMOS
+        # ==========================================================
+
+        dataset = dataset.sort_values(
+
+            by=[
+                "similarity_score",
+                "skill_demand_score",
+                "career_growth_score"
+            ],
+
+            ascending=False
+
+        )
+
+        # ==========================================================
+        # TOP 50
+        # ==========================================================
+
+        dataset = dataset.head(50)
+
+        return dataset.drop(
+            columns=["similarity_score"]
+        )
